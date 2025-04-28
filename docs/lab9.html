@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 9: Algorithmic Bias</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 9: Algorithmic Bias</h1>
+
+</div>
+
+
+<div id="created-412025" class="section level4">
+<h4>Created 4/1/2025</h4>
+<p>Here is the link to the assignment page: <a
+href="https://datascience4psych.github.io/DataScience4Psych/lab09.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab09.html</a>.
+This includes the relevant information for the assignment alongside
+required questions I needed to answer.</p>
+<p>Here is a link to an archvied version of the assignment: <a
+href="https://web.archive.org/web/20250414135239/https://datascience4psych.github.io/DataScience4Psych/lab09alt.html#part-4-understanding-the-sources-of-bias"
+class="uri">https://web.archive.org/web/20250414135239/https://datascience4psych.github.io/DataScience4Psych/lab09alt.html#part-4-understanding-the-sources-of-bias</a></p>
+</div>
+<div
+id="note---this-assignment-is-a-work-in-progress-and-my-answers-may-reflect-this"
+class="section level4">
+<h4>Note - This assignment is a work in progress and my answers may
+reflect this</h4>
+</div>
+<div id="the-data" class="section level3">
+<h3>The data</h3>
+<p>Cleaning up some of the names</p>
+<pre class="r"><code>compas &lt;- read_csv(&quot;./data/compas-scores-2-years.csv&quot;) %&gt;% 
+  clean_names() %&gt;% 
+  rename(decile_score = decile_score_12,
+                         priors_count = priors_count_15)</code></pre>
+<pre><code>## New names:
+## Rows: 7214 Columns: 53
+## ── Column specification
+## ─────────────────────────────────── Delimiter: &quot;,&quot; chr
+## (19): name, first, last, sex, age_cat, race,
+## c_case_number, c_charge_de... dbl (19): id, age,
+## juv_fel_count, decile_score...12, juv_misd_count,
+## juv_ot... lgl (1): violent_recid dttm (2): c_jail_in,
+## c_jail_out date (12): compas_screening_date, dob,
+## c_offense_date, c_arrest_date, r_offe...
+## ℹ Use `spec()` to retrieve the full column specification
+## for this data. ℹ Specify the column types or set
+## `show_col_types = FALSE` to quiet this message.
+## • `decile_score` -&gt; `decile_score...12`
+## • `priors_count` -&gt; `priors_count...15`
+## • `decile_score` -&gt; `decile_score...40`
+## • `priors_count` -&gt; `priors_count...49`</code></pre>
+<pre class="r"><code>view(compas)
+
+nrow(compas)</code></pre>
+<pre><code>## [1] 7214</code></pre>
+<pre class="r"><code>ncol(compas)</code></pre>
+<pre><code>## [1] 53</code></pre>
+</div>
+<div id="part-1---exploring-the-data" class="section level2">
+<h2>Part 1 - Exploring the Data</h2>
+<ol style="list-style-type: decimal">
+<li><p>Each row of the dataset represents an individual who arrested in
+Broward County, Florida. There are 7,214 people in the dataset, and 53
+different variables</p></li>
+<li><p>There should be 7,214 unique people in the dataset. After a quick
+glance through the dataset using view(), I haven’t seen a repeated ID
+number or person’s name.</p></li>
+</ol>
+<div id="visualizing-demographic-data" class="section level3">
+<h3>Visualizing demographic data</h3>
+<div id="distribution-of-compas-risk-scores." class="section level4">
+<h4>Distribution of COMPAS risk scores.</h4>
+<pre class="r"><code>compas %&gt;%
+  ggplot(aes(
+    x = decile_score
+  ))+
+  geom_histogram(stat = &quot;count&quot;)+
+  labs(
+    x = &quot;risk score from 1-10&quot;,
+    y = NULL,
+    title = &quot;Distrubtion of COMPAS Scores&quot;,
+    subtitle = &quot;higher scores mean greater risk&quot;
+  )</code></pre>
+<pre><code>## Warning in geom_histogram(stat = &quot;count&quot;): Ignoring unknown parameters:
+## `binwidth`, `bins`, and `pad`</code></pre>
+<p><img src="lab9_files/figure-html/basic%20distribution-1.png" width="672" /></p>
+<p>Skewed right, indicating there are more poeple with lower risk.</p>
+</div>
+<div id="the-distribution-of-defendants-by-race" class="section level4">
+<h4>The distribution of defendants by race</h4>
+<pre class="r"><code>Race_graph &lt;- compas %&gt;%
+  ggplot(aes(
+    x = race
+  ))+
+  geom_histogram(stat = &quot;count&quot;, fill = &quot;orange&quot;, alpha = .7)+
+  theme_bw()+
+  geom_text(
+    stat = &quot;count&quot;,
+    aes(x = race,
+    y = ..count..,
+    label = ..count..),
+    size = 4, 
+    color = &quot;black&quot;,
+    vjust = -0.2) +
+  labs(
+    x = &quot;Race&quot;,
+    y = NULL,
+    title = &quot;Distribution of Defendents by Race&quot;,
+    subtitle = &quot;People arrested in Broward County, Florida&quot;
+  )
+
+Race_graph</code></pre>
+<p><img src="lab9_files/figure-html/graph%20race-1.png" width="672" /></p>
+</div>
+<div id="the-distribution-of-defendants-by-sex" class="section level4">
+<h4>The distribution of defendants by sex</h4>
+<pre class="r"><code>Sex_graph &lt;- compas %&gt;%
+  ggplot(aes(
+    x = sex
+  ))+
+  geom_histogram(stat = &quot;count&quot;, fill = c(&quot;pink&quot;, &quot;steelblue2&quot;))+
+  theme_bw()+
+  geom_text(
+    stat = &quot;count&quot;,
+    aes(x = sex,
+    y = (..count../2),
+    label = ..count..),
+    size = 7, 
+    color = &quot;black&quot;) +
+  labs(
+    x = &quot;Sex&quot;,
+    y = NULL,
+    title = &quot;Distribution of Defendents by Sex&quot;,
+    subtitle = &quot;People arrested in Broward County, Florida&quot;
+  )
+
+Sex_graph</code></pre>
+<p><img src="lab9_files/figure-html/graph%20sex-1.png" width="672" /></p>
+</div>
+<div id="the-distribution-of-defendants-by-age" class="section level4">
+<h4>The distribution of defendants by age</h4>
+<pre class="r"><code>Age_graph &lt;- compas %&gt;%
+  ggplot(aes(
+    x = age_cat
+  ))+
+  geom_histogram(stat = &quot;count&quot;, fill = &quot;gray&quot;, alpha = .7)+
+  theme_bw()+
+  geom_text(
+    stat = &quot;count&quot;,
+    aes(x = age_cat,
+    y = ..count..,
+    label = ..count..),
+    size = 5, 
+    color = &quot;black&quot;,
+    vjust = -0.2) +
+  labs(
+    x = &quot;Age&quot;,
+    y = NULL,
+    title = &quot;Distribution of Defendents by Age&quot;,
+    subtitle = &quot;People arrested in Broward County, Florida&quot;
+  )
+
+Age_graph</code></pre>
+<p><img src="lab9_files/figure-html/graph%20age-1.png" width="672" /></p>
+</div>
+<div id="optional---graph-all-on-the-same-page" class="section level4">
+<h4>Optional - Graph all on the same page</h4>
+<p>Here I’m using plot_grid() from the cowplot package as one example of
+how to do this. There are clear issues (such as size of text), but it
+will get the job done.</p>
+<pre class="r"><code>library(cowplot)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggpubr&#39;:
+## 
+##     get_legend</code></pre>
+<pre><code>## The following object is masked from &#39;package:lubridate&#39;:
+## 
+##     stamp</code></pre>
+<pre class="r"><code>plot_grid(Race_graph,Sex_graph, Age_graph)</code></pre>
+<p><img src="lab9_files/figure-html/all%20graphs%20together-1.png" width="672" /></p>
+<p>I turned to chatGPT to see if it had any suggestions on fixing this
+issue. It initially recommended adding the arguments ncol = 1, align =
+“v” to the plot_grid(). This ended up creating this… unique outcome.</p>
+<div class="float">
+<img src="chat_suggestion.png"
+alt="This reminds me of Stretch Armstrong" />
+<div class="figcaption">This reminds me of Stretch Armstrong</div>
+</div>
+<p>I told it I wanted the Axes to be fixed, and it gave me a great
+suggestion.</p>
+<p>I can take the original dataset and create a subset of the data that
+just includes race, sex, and age. From there, I can use the wide-to-long
+transformation, making three separate rows for each person (one for
+race, one for sex, one for age). Category is the designation of the IV,
+and Value is what they identify as.</p>
+<pre class="r"><code>compas_long &lt;- compas %&gt;%
+  pivot_longer(cols = c(race, sex, age_cat), names_to = &quot;Category&quot;, values_to = &quot;Value&quot;)
+#view(compas_long)</code></pre>
+<p>Now, I can use facet_wrap() using category. This way, I can create
+three separate graphs side by side. I copied its suggestion and then
+made edits. These were for style and for aesthetic.</p>
+<pre class="r"><code>compas_long %&gt;%
+ggplot(aes(
+  x = Value)) +
+  geom_bar(aes(fill = Category), alpha = 0.7) +
+  geom_text(
+    stat = &quot;count&quot;,
+    aes(y = ..count.., 
+        label = ..count..),
+    vjust = -0.2,
+    size = 3
+  ) +
+  theme_bw() +
+  facet_wrap(~Category, labeller = as_labeller(c(`age_cat` = &quot;Age&quot;, `race` = &quot;Race&quot;, `sex` = &quot;Sex&quot;)), scales = &quot;free_x&quot;)+ # scales = &quot;free_x&quot; keeps different x-scales while aligning axes properly
+  labs(
+    x = NULL,
+    y = &quot;Count&quot;,
+    title = &quot;Distribution of Defendants&quot;,
+    subtitle = &quot;People arrested in Broward County, Florida&quot;
+  ) +
+  theme(legend.position = &quot;none&quot;,
+        axis.text.x = element_text(angle = -45, vjust = 0.5, hjust=.5)
+        )</code></pre>
+<p><img src="lab9_files/figure-html/optional%20demographic%202-1.png" width="672" /></p>
+<p>Chat helped me figure out how to change all the colors to reflect the
+original colors I used. This was a direct copy paste, with me changing
+the colors.</p>
+<pre class="r"><code>compas_long %&gt;% 
+  ggplot(aes(x = Value, fill = Value)) +   
+  geom_bar(alpha = 0.7) +   
+  geom_text(     
+    stat = &quot;count&quot;,     
+    aes(y = ..count.., label = ..count..),     
+    vjust = -0.2,     
+    size = 3   
+  ) +   
+  theme_bw() +   
+  facet_wrap(~Category, 
+             labeller = as_labeller(c(`age_cat` = &quot;Age&quot;, 
+                                      `race` = &quot;Race&quot;, 
+                                      `sex` = &quot;Sex&quot;)), 
+             scales = &quot;free_x&quot;) +  
+  labs(     
+    x = NULL,     
+    y = &quot;Count&quot;,     
+    title = &quot;Distribution of Defendants&quot;,     
+    subtitle = &quot;People arrested in Broward County, Florida&quot;   
+  ) +   
+  theme(
+    legend.position = &quot;none&quot;,
+    axis.text.x = element_text(angle = -45, vjust = 0.5, hjust = .5)
+  ) + 
+  scale_fill_manual(
+    values = c(&quot;25 - 45&quot; = &quot;gray&quot;, 
+               &quot;Greater than 45&quot; = &quot;gray&quot;, 
+               &quot;Less than 25&quot; = &quot;gray&quot;,
+               &quot;African-American&quot; = &quot;orange&quot;, 
+               &quot;Caucasian&quot; = &quot;orange&quot;, 
+               &quot;Asian&quot; = &quot;orange&quot;, 
+               &quot;Hispanic&quot; = &quot;orange&quot;, 
+               &quot;Native American&quot; = &quot;orange&quot;, 
+               &quot;Other&quot; = &quot;orange&quot;,
+               &quot;Male&quot; = &quot;royalblue&quot;, 
+               &quot;Female&quot; = &quot;hotpink&quot;)
+  )</code></pre>
+<p><img src="lab9_files/figure-html/optional%20demographic%20with%20color-1.png" width="672" /></p>
+</div>
+<div id="visualization-of-the-compas-risk-scores"
+class="section level4">
+<h4>Visualization of the COMPAS risk scores</h4>
+<pre class="r"><code>compas %&gt;%
+  ggplot(aes(
+    x = decile_score
+  ))+
+  theme_bw()+
+  geom_histogram(stat = &quot;count&quot;, fill = &quot;gray&quot;)+
+    geom_text(
+    stat = &quot;count&quot;,
+    aes(x = decile_score,
+    y = ..count..,
+    label = ..count..),
+    size = 3.5, 
+    color = &quot;black&quot;,
+    vjust = -0.2) +
+  labs(
+    x = &quot;COMPAS risk scores&quot;,
+    y = NULL,
+    title = &quot;Distribution of Defendents by COMPAS risk&quot;,
+    subtitle = &quot;People arrested in Broward County, Florida&quot;
+  )</code></pre>
+<p><img src="lab9_files/figure-html/COMPAS%20scores%20visual-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="part-2---risk-scores-and-recidivism" class="section level2">
+<h2>Part 2 - Risk scores and recidivism</h2>
+<pre class="r"><code>compas %&gt;%
+  ggplot(aes(
+    x = decile_score
+  ))+
+  facet_wrap(~two_year_recid, labeller = as_labeller(c(`0` = &quot;Did not recidivate within two years&quot;, `1` = &quot;Recidivated within two years&quot;)))+
+  geom_histogram()+
+  theme_bw()+
+   labs(
+    x = &quot;Whether the defendant recidivated within two years (0 = no, 1 = yes)&quot;,
+    y = &quot;COMPAS risk score&quot;,
+    title = &quot;The relationship between risk scores and actual recidivism&quot;
+  )</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.</code></pre>
+<p><img src="lab9_files/figure-html/risk%20score%20to%20recidivism%20visual-1.png" width="672" /></p>
+<pre class="r"><code>compas %&gt;%
+  ggplot(aes(
+    x = two_year_recid,
+    y = decile_score
+  ))+
+  geom_smooth(formula = y~x, color = &quot;black&quot;)+
+  theme_bw()+
+   labs(
+    x = &quot;Whether the defendant recidivated within two years (0 = no, 1 = yes)&quot;,
+    y = &quot;COMPAS risk score&quot;,
+    title = &quot;The relationship between risk scores and actual recidivism&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39;</code></pre>
+<p><img src="lab9_files/figure-html/risk%20score%20to%20recidivism%20visual-2.png" width="672" /></p>
+<p>Assuming I did this correctly, it appears that recidivism, on
+average, increases COMPAS risk score.</p>
+<div id="alternate-plot" class="section level4">
+<h4>Alternate plot</h4>
+<pre class="r"><code>compas %&gt;%
+  ggplot(aes(
+    x = decile_score
+  ))+
+  geom_histogram()+
+  geom_text(
+    aes(x = decile_score,
+        y = ..count..,
+        label = ..count..),
+    stat = &quot;count&quot;,
+    size = 3.5, 
+    color = &quot;black&quot;,
+    vjust = -0.2) +
+  facet_wrap(~ two_year_recid, 
+             labeller = as_labeller(c(`0` = &quot;Recidivated within two years&quot;, `1` = &quot;Did not recidivate within two 
+                                      years&quot;)))+
+  labs(
+    x = &quot;COMPAS risk score from 1-10 (higher = greater risk)&quot;,
+    y = NULL,
+    title = &quot;The relationship between risk scores and actual recidivism&quot;
+  )</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.</code></pre>
+<p><img src="lab9_files/figure-html/alt%20plot-1.png" width="672" /></p>
+<p>This plot is more showing the breakdown of COMPAS scores based on
+recidivism.</p>
+</div>
+<div id="compas-accuracy" class="section level3">
+<h3>COMPAS Accuracy</h3>
+<pre class="r"><code>compas_accuracy &lt;- compas %&gt;%
+  mutate(compas_accurate = case_when(
+    decile_score &gt;= 7 &amp; two_year_recid == 1 ~ &quot;Accurate, committed crime&quot;,
+    decile_score &lt; 7 &amp; two_year_recid == 1 ~ &quot;Not acccurate, committed crime&quot;,
+    decile_score &lt;= 4 &amp; two_year_recid == 0 ~ &quot;Accurate, no further crime&quot;,
+    decile_score &gt; 4 &amp; two_year_recid == 0 ~ &quot;Not accurate, no further crime&quot;
+  ))
+
+percent_accurate &lt;- compas %&gt;%
+  mutate(compas_accurate = case_when(
+    decile_score &gt;= 7 &amp; two_year_recid == 1 ~ 1,
+    decile_score &lt; 7 &amp; two_year_recid == 1 ~ 0,
+    decile_score &lt;= 4 &amp; two_year_recid == 0 ~ 1,
+    decile_score &gt; 4 &amp; two_year_recid == 0 ~ 0
+  ))
+
+compas_accuracy %&gt;%
+  ggplot(aes(
+    x = compas_accurate,
+    fill = compas_accurate
+  ))+
+  geom_histogram(stat=&quot;count&quot;)+
+  scale_fill_manual(values=c(&quot;green4&quot;, &quot;green4&quot;,&quot;red2&quot;, &quot;red2&quot;))+
+  coord_flip()+
+  labs(
+    x = &quot;Accuracy of COMPAS&quot;,
+    y = NULL,
+    title = &quot;How accurate is the COMPAS based on recidivism&quot;
+  )+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="lab9_files/figure-html/compas%20accuracy-1.png" width="672" /></p>
+<p>It’s hard to tell. Yes there are lots of people who it accurately
+predicts, but that could be based on how people score on the
+COMPAS/their recidivism.</p>
+<pre class="r"><code>committed_crime_test &lt;- compas %&gt;%
+  mutate(compas_accurate = case_when(
+    decile_score &gt;= 7 &amp; two_year_recid == 1 ~ &quot;Accurate, committed crime&quot;,
+    decile_score &lt; 7 &amp; two_year_recid == 1 ~ &quot;Not acccurate, committed crime&quot;,
+    decile_score &lt;= 4 &amp; two_year_recid == 0 ~ &quot;Accurate, no further crime&quot;,
+    decile_score &gt; 4 &amp; two_year_recid == 0 ~ &quot;Not accurate, no further crime&quot;
+  ))
+
+df_percent1 &lt;- count(percent_accurate, compas_accurate)
+
+Rec_total_accurate &lt;- df_percent1 %&gt;%
+  filter(compas_accurate == 0) %&gt;% dplyr::select(n)
+
+Rec_total_innacute &lt;- df_percent1 %&gt;%
+  filter(compas_accurate == 1) %&gt;% dplyr::select(n)
+
+Rec_total &lt;- df_percent1 %&gt;% summarize(sum = sum(n))
+
+Rec_total_accurate/Rec_total*100</code></pre>
+<pre><code>##          n
+## 1 44.10868</code></pre>
+<pre class="r"><code>committed_crime &lt;- compas %&gt;%
+  mutate(compas_accurate = case_when(
+    decile_score &gt;= 7 &amp; two_year_recid == 1 ~ 1,
+    decile_score &lt; 7 &amp; two_year_recid == 1 ~ 2,
+    decile_score &lt;= 4 &amp; two_year_recid == 0 ~ 3,
+    decile_score &gt; 4 &amp; two_year_recid == 0 ~ 4
+  ))
+
+
+df_percent2 &lt;- count(committed_crime, compas_accurate)
+
+acc_commit &lt;- df_percent2 %&gt;%
+  filter(compas_accurate == 1) %&gt;% dplyr::select(n)
+
+not_acc_commit &lt;- df_percent2 %&gt;%
+  filter(compas_accurate == 2) %&gt;% dplyr::select(n)
+
+acc_no_commit &lt;- df_percent2 %&gt;%
+  filter(compas_accurate == 3) %&gt;% dplyr::select(n)
+
+not_acc_no_commit &lt;- df_percent2 %&gt;%
+  filter(compas_accurate == 4) %&gt;% dplyr::select(n)
+
+total_breakdown &lt;- df_percent2 %&gt;% summarize(sum = sum(n))
+
+acc_commit/total_breakdown*100</code></pre>
+<pre><code>##          n
+## 1 18.72747</code></pre>
+<pre class="r"><code>acc_commit/(acc_commit + not_acc_commit)*100</code></pre>
+<pre><code>##          n
+## 1 41.55644</code></pre>
+<pre class="r"><code>acc_no_commit/(acc_no_commit+not_acc_no_commit)*100</code></pre>
+<pre><code>##          n
+## 1 67.65077</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>The COMPAS algorithm doesn’t perform great (44% overall accuracy,
+41% accurate among people who commit a crime). It’s mostly accurate for
+predicting people who won’t commit another crime (67%).</li>
+</ol>
+</div>
+</div>
+<div id="part-3---investigating-disparities" class="section level2">
+<h2>Part 3 - Investigating Disparities</h2>
+<pre class="r"><code>race_graph &lt;- compas %&gt;%
+filter(race == c(&quot;Caucasian&quot;,&quot;African-American&quot;))
+
+
+COMPAS_race_graph &lt;- race_graph %&gt;%
+  ggplot(aes(
+    x = decile_score
+  ))+
+  facet_wrap(~ race, labeller = as_labeller(c(`Caucasian` = &quot;White&quot;, `African-American` = &quot;Black&quot;)))+
+  geom_histogram(stat = &quot;count&quot;)+
+  labs(
+    x = &quot;COMPAS risk score from 1-10 (higher = greater risk)&quot;,
+    y = NULL,
+    title = &quot;Race disparities on the COMPAS scores&quot;
+  )</code></pre>
+<pre><code>## Warning in geom_histogram(stat = &quot;count&quot;): Ignoring unknown parameters:
+## `binwidth`, `bins`, and `pad`</code></pre>
+<pre class="r"><code>COMPAS_race_graph</code></pre>
+<p><img src="lab9_files/figure-html/race%20disparity-1.png" width="672" /></p>
+<pre class="r"><code>race_accurate &lt;- race_graph %&gt;%
+  mutate(race_compas_accurate = case_when(
+    decile_score &gt;= 7 &amp; race == &quot;Caucasian&quot; ~ 1,
+    decile_score &gt;= 7 &amp; race == &quot;African-American&quot; ~ 0
+  ))
+
+
+race_percent &lt;- count(race_accurate, race_compas_accurate)
+
+
+
+White_accurate &lt;- race_percent %&gt;%
+  filter(race_compas_accurate == 1) %&gt;% dplyr::select(n)
+
+Black_accurate &lt;- race_percent %&gt;%
+  filter(race_compas_accurate == 0) %&gt;% dplyr::select(n)
+
+Black_accurate/(White_accurate + Black_accurate )*100</code></pre>
+<pre><code>##          n
+## 1 78.26087</code></pre>
+<p>There’s a clear difference in distribution between white and black
+defendants who were classified as high risk, as 78% of people who had a
+COMPAS score above 7 were black.</p>
+<div id="q10---accuracy-of-predictions-for-different-racial-groups"
+class="section level3">
+<h3>Q10 - Accuracy of predictions for different racial groups</h3>
+<div id="false-positive" class="section level4">
+<h4>False Positive</h4>
+<p>I’ll admit I tried this 30 different ways. I turned to ChatGPT to ask
+for help. We went back and forth on code that didn’t initially work, and
+I teased out what parts weren’t working and what I truly needed. We
+settled on this code.</p>
+<pre class="r"><code>non_recidivists &lt;- race_graph %&gt;%
+  filter(two_year_recid == 0)
+
+
+total_non_recid &lt;- non_recidivists %&gt;%
+  group_by(race) %&gt;%
+  summarise(total_non_recid = n())
+
+
+false_positives &lt;- non_recidivists %&gt;%
+  filter(decile_score &gt;= 7) %&gt;%
+  group_by(race) %&gt;%
+  summarise(false_positives = n())
+
+
+fpr_results &lt;- left_join(false_positives, total_non_recid, by = &quot;race&quot;) %&gt;%
+  mutate(FPR = false_positives / total_non_recid * 100)
+
+fpr_results</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   race             false_positives total_non_recid   FPR
+##   &lt;chr&gt;                      &lt;int&gt;           &lt;int&gt; &lt;dbl&gt;
+## 1 African-American             198             879 22.5 
+## 2 Caucasian                     62             748  8.29</code></pre>
+</div>
+<div id="false-negative" class="section level4">
+<h4>False Negative</h4>
+<p>I edited the code from above.</p>
+<pre class="r"><code>recidivists &lt;- race_graph %&gt;%
+  filter(two_year_recid == 1)
+
+
+total_recid &lt;- recidivists %&gt;%
+  group_by(race) %&gt;%
+  summarise(total_recid = n())
+
+
+false_negatives &lt;- recidivists %&gt;%
+  filter(decile_score &lt;= 4) %&gt;%
+  group_by(race) %&gt;%
+  summarise(false_negatives = n())
+
+
+fnr_results &lt;- left_join(false_negatives, total_recid, by = &quot;race&quot;) %&gt;%
+  mutate(FNR = false_negatives / total_recid * 100)
+
+fnr_results</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   race             false_negatives total_recid   FNR
+##   &lt;chr&gt;                      &lt;int&gt;       &lt;int&gt; &lt;dbl&gt;
+## 1 African-American             279         979  28.5
+## 2 Caucasian                    238         490  48.6</code></pre>
+</div>
+<div id="visualizing-false-positives-and-negatives"
+class="section level4">
+<h4>Visualizing False positives and negatives</h4>
+<pre class="r"><code>error_rates1 &lt;- merge(fnr_results,fpr_results, by=&quot;race&quot;)
+
+error_rate_adjusted &lt;- error_rates1 %&gt;%
+  pivot_longer(cols = -c(race, total_recid,), names_to = &quot;Error_type&quot;)
+
+error_rate_adjusted %&gt;%
+  ggplot(aes(
+    x = race, 
+    y = value, 
+    group = Error_type,
+    color = Error_type
+  )) +
+  geom_line(size = 1) +
+  geom_point(size = 3) +
+  facet_wrap(~Error_type, scales = &quot;free&quot;, 
+      labeller = as_labeller(c(
+         `false_negatives` = &quot;False Negatives&quot;, 
+         `false_positives` = &quot;False Positives&quot;, 
+         `FNR` = &quot;False Negative Proportion&quot;,
+         `FPR` = &quot;False Positive Proportion&quot;, 
+         `total_non_recid` = &quot;Non-recidivism&quot;
+             ))) +
+  scale_color_manual(values = c(
+    &quot;false_negatives&quot; = &quot;red&quot;,
+    &quot;false_positives&quot; = &quot;blue&quot;,
+    &quot;FNR&quot; = &quot;darkgreen&quot;,
+    &quot;FPR&quot; = &quot;purple&quot;,
+    &quot;total_non_recid&quot; = &quot;orange&quot;
+  )) +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = -10, vjust = 0.5, hjust=.5))+
+  labs(
+    x = &quot;Race&quot;,
+    y = NULL,
+    title = &quot;Accuracy of predictions for different racial groups&quot;,
+    color = &quot;Prediction Results&quot;
+  )</code></pre>
+<p><img src="lab9_files/figure-html/visualize%20FP%20and%20FN-1.png" width="672" /></p>
+<p>Based on the above, we can see that Black defendants have higher
+false positives. This means black defendants are more likely to be
+non-recidivists who were classified as high risk. Although there were
+more false negatives (recidivists who were classified as low risk), this
+can be explained by the false negative proportion. There were twice as
+many black defendants classified as recidivists than white
+defendants.</p>
+</div>
+</div>
+</div>
+<div id="part-4---understanding-the-source-bias" class="section level2">
+<h2>Part 4 - Understanding the source bias</h2>
+<pre class="r"><code>compas %&gt;%
+  ggplot(aes(
+    x = decile_score,
+    y = priors_count,
+    color = race
+  ))+
+  geom_smooth()+
+  geom_jitter(width = .1, alpha = .6)+
+  theme_bw()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula = &#39;y ~
+## s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<pre><code>## Warning: Failed to fit group 2.
+## Caused by error in `smooth.construct.cr.smooth.spec()`:
+## ! x has insufficient unique values to support 10 knots: reduce k.</code></pre>
+<pre><code>## Warning: Failed to fit group 5.
+## Caused by error in `smooth.construct.cr.smooth.spec()`:
+## ! x has insufficient unique values to support 10 knots: reduce k.</code></pre>
+<p><img src="lab9_files/figure-html/prior%20and%20risk%20score%20visual-1.png" width="960" /></p>
+<p>This is really hard to see. You can kind of tell there’s more green
+(Caucasian) lower on the risk score and more red (African American)
+higher up. I filtered to only look at Caucasian and African American
+individuals and put them side by side.</p>
+<pre class="r"><code>race_graph %&gt;%
+  ggplot(aes(
+    x = decile_score,
+    y = priors_count
+  ))+
+  geom_smooth()+
+  geom_jitter(width = .15, alpha = .6)+
+  facet_wrap(~race)+
+  theme_bw()+
+  labs(
+    x = &quot;Risk score&quot;,
+    y = &quot;Number of prior offenses&quot;,
+    title = &quot;Race discrepancies for the number of convictions&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula = &#39;y ~
+## s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="lab9_files/figure-html/other%20prior%20and%20risk%20score%20visual-1.png" width="672" /></p>
+<p>Here you can tell there are way less white defendants higher up on
+risk scale, and that African Americans have more prior convictions. It
+looks like the algorithm doesn’t weigh convictions differently? I’m
+actually not quite sure.</p>
+<ol start="13" style="list-style-type: decimal">
+<li>[I’ll start by saying I didn’t exactly understand the question] I
+think there is evidence supporting ProPublica’s claim. There is a higher
+amount of false positives for Black defendants compared to white
+defendants. Additionally, the accuracy is poor (44%), suggesting that
+focusing on calibration might lead to errors.</li>
+</ol>
+</div>
+<div id="part-5---designing-a-more-fair-algorithm"
+class="section level2">
+<h2>Part 5 - Designing a more fair algorithm</h2>
+<ol start="14" style="list-style-type: decimal">
+<li><p>One of the first things I would look at is the the charge types.
+The current algorithm does not take into account the type of crimes
+committed. I am thinking more violent crimes would lead to a better
+measure of likelihood of committing another crime. I am also thinking
+that juvenile offenses could be a good predictor, as people with more
+juvenile offenses and more felonies (compared to misdemeanors) would
+indicate future crime.</p></li>
+<li><p>A fair algorithm would probably have to weigh human bias. This
+could mean understanding and factoring in racism, sexism, etc. For
+example, black people might be more likely to have a false positive
+arrest (i.e. arrested while innocent). To some it might look
+mathematically wrong to weight black defendants differently compared to
+white defendants, but this might increases our accuracy.</p></li>
+<li><p>Algorithms should be uses as a guide, not as a decision maker.
+Knowing the current accuracy of COMPAS is so low, a human needs to make
+the final decision as to an individual’s status. Based on what I’ve
+seen, I would make it policy that any evidence for creating policy that
+is supported by an algorithm need to be taken through a period of
+review. In this review, I would create similar analyses in this lab, and
+make sure that the algorithm is up to the same standard as scientific
+review (i.e. alpha .05 standard), ensuring that the algorithm is not due
+to chance.</p></li>
+</ol>
+</div>
+<div id="stretch-goal" class="section level1">
+<h1>Stretch Goal</h1>
+<p>Note this will be a work in progress, as it is a stretch goal and I
+am still learning.</p>
+<p>*17. I reran the visualization from above, showing prior
+convictions.</p>
+<pre class="r"><code>race_graph %&gt;%
+  ggplot(aes(
+    x = decile_score,
+    y = priors_count
+  ))+
+  geom_smooth()+
+  geom_jitter(width = .15, alpha = .6)+
+  facet_wrap(~race)+
+  theme_bw()+
+  labs(
+    x = &quot;Risk score&quot;,
+    y = &quot;Number of prior offenses&quot;,
+    title = &quot;Race discrepancies for the number of convictions&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula = &#39;y ~
+## s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="lab9_files/figure-html/stretch%20other%20prior%20and%20risk%20score%20visual-1.png" width="672" /></p>
+<p>As I explained above, the distribution for black defendants is more
+evenly spaced out compared to white defendants, which is more skewed
+left. It looks similar to the other graph, just looking at risk
+score.</p>
+<pre class="r"><code>COMPAS_race_graph</code></pre>
+<p><img src="lab9_files/figure-html/extra%20point-1.png" width="672" /></p>
+<div id="question-19---other-variables-of-interest"
+class="section level5">
+<h5>Question 19 - other variables of interest</h5>
+<pre class="r"><code>race_graph %&gt;%
+  ggplot(aes(
+    x = decile_score,
+    fill = c_charge_degree
+  ))+
+  geom_histogram(stat = &quot;count&quot;)+
+  scale_fill_manual(labels = c(&quot;Felony&quot;, &quot;Misdemeanor&quot;), values = c(&quot;red3&quot;, &quot;yellow3&quot;))+
+  facet_grid(c_charge_degree ~ race, labeller = as_labeller( c(
+        &#39;African-American&#39; = &quot;Black&quot;,
+        &#39;Caucasian&#39; = &quot;White&quot;,
+        &#39;F&#39; = &quot;Felony&quot;,
+       &#39;M&#39; = &quot;Misdemeanor&quot;
+        )))+
+  theme_bw()+
+  labs(
+    x = &quot;Risk score&quot;,
+    y = &quot;Number of prior offenses&quot;,
+    title = &quot;Race discrepancies for the number of convictions&quot;
+      )+
+    theme(legend.position = &quot;none&quot;)</code></pre>
+<pre><code>## Warning in geom_histogram(stat = &quot;count&quot;): Ignoring unknown parameters:
+## `binwidth`, `bins`, and `pad`</code></pre>
+<p><img src="lab9_files/figure-html/COMPAS%20and%20other%20variables-1.png" width="672" /></p>
+<p>Misdemeanors are generally your least severe charges. Felonies are
+murder, rape, breaking into cars, breaking into houses, they are more
+serious crimes. We can see there are a lot more felonies associated with
+black dependents than compared to white dependents. I would guess that
+the type of charge certainly helps lead to the disparities in risk
+score.</p>
+</div>
+<div id="building-a-fairer-algorithm" class="section level3">
+<h3>Building a fairer algorithm</h3>
+<pre class="r"><code>recid_model &lt;- glm(
+  two_year_recid ~ age + priors_count + c_charge_degree,
+  data = compas,
+  family = binomial()
+)
+
+
+compas &lt;- compas %&gt;%
+  mutate(
+    predicted_prob = predict(recid_model, type = &quot;response&quot;),
+    our_high_risk = predicted_prob &gt;= 0.5
+  )</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 03 - Nobel laureates</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 03 - Nobel laureates</h1>
+
+</div>
+
+
+<div id="created-1272025" class="section level4">
+<h4>Created 1/27/2025</h4>
+<p>Link to assignment: <a
+href="https://datascience4psych.github.io/DataScience4Psych/lab03.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab03.html</a></p>
+<p>Link to archived assignment link: <a
+href="https://web.archive.org/web/20250414135349/https://datascience4psych.github.io/DataScience4Psych/lab03.html#lab-prep"
+class="uri">https://web.archive.org/web/20250414135349/https://datascience4psych.github.io/DataScience4Psych/lab03.html#lab-prep</a></p>
+</div>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<div id="exercise-1" class="section level3">
+<h3>Exercise 1</h3>
+<p>Using dataset “Nobel”, which examines information about nobel
+winners</p>
+<p>There are 26 variables and 935 rows. Each row is a person (so in
+theory there are 934 people in the nobel dataset).</p>
+<pre class="r"><code>glimpse(nobel)</code></pre>
+<pre><code>## Rows: 935
+## Columns: 26
+## $ id                    &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 6, 8, 9, 10, 11, 12, 13, 14, 1…
+## $ firstname             &lt;chr&gt; &quot;Wilhelm Conrad&quot;, &quot;Hendrik A.&quot;, &quot;Pieter&quot;, &quot;Henri…
+## $ surname               &lt;chr&gt; &quot;Röntgen&quot;, &quot;Lorentz&quot;, &quot;Zeeman&quot;, &quot;Becquerel&quot;, &quot;Cu…
+## $ year                  &lt;dbl&gt; 1901, 1902, 1902, 1903, 1903, 1903, 1911, 1904, …
+## $ category              &lt;chr&gt; &quot;Physics&quot;, &quot;Physics&quot;, &quot;Physics&quot;, &quot;Physics&quot;, &quot;Phy…
+## $ affiliation           &lt;chr&gt; &quot;Munich University&quot;, &quot;Leiden University&quot;, &quot;Amste…
+## $ city                  &lt;chr&gt; &quot;Munich&quot;, &quot;Leiden&quot;, &quot;Amsterdam&quot;, &quot;Paris&quot;, &quot;Paris…
+## $ country               &lt;chr&gt; &quot;Germany&quot;, &quot;Netherlands&quot;, &quot;Netherlands&quot;, &quot;France…
+## $ born_date             &lt;date&gt; 1845-03-27, 1853-07-18, 1865-05-25, 1852-12-15,…
+## $ died_date             &lt;date&gt; 1923-02-10, 1928-02-04, 1943-10-09, 1908-08-25,…
+## $ gender                &lt;chr&gt; &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;female&quot;…
+## $ born_city             &lt;chr&gt; &quot;Remscheid&quot;, &quot;Arnhem&quot;, &quot;Zonnemaire&quot;, &quot;Paris&quot;, &quot;P…
+## $ born_country          &lt;chr&gt; &quot;Germany&quot;, &quot;Netherlands&quot;, &quot;Netherlands&quot;, &quot;France…
+## $ born_country_code     &lt;chr&gt; &quot;DE&quot;, &quot;NL&quot;, &quot;NL&quot;, &quot;FR&quot;, &quot;FR&quot;, &quot;PL&quot;, &quot;PL&quot;, &quot;GB&quot;, …
+## $ died_city             &lt;chr&gt; &quot;Munich&quot;, NA, &quot;Amsterdam&quot;, NA, &quot;Paris&quot;, &quot;Sallanc…
+## $ died_country          &lt;chr&gt; &quot;Germany&quot;, &quot;Netherlands&quot;, &quot;Netherlands&quot;, &quot;France…
+## $ died_country_code     &lt;chr&gt; &quot;DE&quot;, &quot;NL&quot;, &quot;NL&quot;, &quot;FR&quot;, &quot;FR&quot;, &quot;FR&quot;, &quot;FR&quot;, &quot;GB&quot;, …
+## $ overall_motivation    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ share                 &lt;dbl&gt; 1, 2, 2, 2, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, …
+## $ motivation            &lt;chr&gt; &quot;\&quot;in recognition of the extraordinary services …
+## $ born_country_original &lt;chr&gt; &quot;Prussia (now Germany)&quot;, &quot;the Netherlands&quot;, &quot;the…
+## $ born_city_original    &lt;chr&gt; &quot;Lennep (now Remscheid)&quot;, &quot;Arnhem&quot;, &quot;Zonnemaire&quot;…
+## $ died_country_original &lt;chr&gt; &quot;Germany&quot;, &quot;the Netherlands&quot;, &quot;the Netherlands&quot;,…
+## $ died_city_original    &lt;chr&gt; &quot;Munich&quot;, NA, &quot;Amsterdam&quot;, NA, &quot;Paris&quot;, &quot;Sallanc…
+## $ city_original         &lt;chr&gt; &quot;Munich&quot;, &quot;Leiden&quot;, &quot;Amsterdam&quot;, &quot;Paris&quot;, &quot;Paris…
+## $ country_original      &lt;chr&gt; &quot;Germany&quot;, &quot;the Netherlands&quot;, &quot;the Netherlands&quot;,…</code></pre>
+</div>
+<div id="exercise-2" class="section level3">
+<h3>Exercise 2</h3>
+<p>Filtered out people who don’t have a country, organizations that won
+a nobel, and people who are dead</p>
+<pre class="r"><code>nobel_living &lt;- nobel %&gt;%
+ filter(country != &quot;NA&quot; &amp; gender != &quot;org&quot; &amp; is.na(died_date))</code></pre>
+</div>
+<div id="exercise-3" class="section level3">
+<h3>Exercise 3</h3>
+<p>Created a dataset for American winners in physics, medicine,
+chemistry, and economics</p>
+<pre class="r"><code>#are they in the US
+nobel_living &lt;- nobel_living %&gt;%
+  mutate(
+    country_us = if_else(country == &quot;USA&quot;, &quot;USA&quot;, &quot;Other&quot;)
+  )
+
+#Physics, Medicine, Chemistry, and Economics
+nobel_living_science &lt;- nobel_living %&gt;%
+  filter(category %in% c(&quot;Physics&quot;, &quot;Medicine&quot;, &quot;Chemistry&quot;, &quot;Economics&quot;))</code></pre>
+<p>Graph for the relationship between the category of prize and whether
+the laureate was in the US when they won the nobel prize</p>
+<pre class="r"><code>ggplot(
+  data = nobel_living_science,
+  mapping = aes(
+    x = country_us,
+  )
+) +
+  facet_wrap(~category)+
+  theme_bw()+
+  geom_bar()+
+  coord_flip()+
+  labs(
+      x = &quot;Country&quot;,
+      y = &quot;Number of Prize Winners&quot;,
+      title = &quot;Relationship Between Prize Winner and Country&quot;
+  )</code></pre>
+<p><img src="lab3_files/figure-html/visual%20plot-1.png" width="672" /></p>
+<p>More USA winners in each category. Economics has a disproportionate
+number of USA winners. This isn’t supporting much to support the
+buzzfeed article.</p>
+</div>
+<div id="exercise-4" class="section level3">
+<h3>Exercise 4</h3>
+<pre class="r"><code>#adding in country born in US to the other nobel living
+us_born_nobel &lt;- nobel_living_science %&gt;%
+  mutate(
+    born_country = if_else(born_country == &quot;USA&quot;, &quot;USA&quot;, &quot;Other&quot;)
+  )
+
+us_born_nobel %&gt;%
+count(born_country)</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   born_country     n
+##   &lt;chr&gt;        &lt;int&gt;
+## 1 Other          123
+## 2 USA            105</code></pre>
+<p>105 people born in the USA, 123 were not. …</p>
+</div>
+<div id="exercise-5" class="section level3">
+<h3>Exercise 5</h3>
+<p>Plot for born in USA winners</p>
+<pre class="r"><code>ggplot(
+  data = us_born_nobel,
+  mapping = aes(
+    x = born_country,
+  )
+) +
+   geom_bar()+
+  facet_wrap(~category)+
+  theme_bw()+
+  coord_flip()+
+  labs(
+      x = &quot;Birth Country&quot;,
+      y = &quot;Number of Prize Winners&quot;,
+      title = &quot;Relationship Between Prize Winner and Birth Country&quot;
+  )</code></pre>
+<p><img src="lab3_files/figure-html/born%20in%20USA-1.png" width="672" /></p>
+<p>Buzzfeed got it right about more nobel winners immigrating to USA.
+The only exception is if we’re talking about economics, as econ winners
+mostly are US citizens in the united states.</p>
+<p>…</p>
+</div>
+<div id="exercise-6" class="section level3">
+<h3>Exercise 6</h3>
+<pre class="r"><code>nobel_international &lt;- nobel %&gt;%
+ filter(country == &quot;USA&quot; &amp; born_country != &quot;USA&quot;) %&gt;%
+  count(born_country) %&gt;%
+  arrange(desc(n)) %&gt;%
+  print()</code></pre>
+<pre><code>## # A tibble: 37 × 2
+##    born_country       n
+##    &lt;chr&gt;          &lt;int&gt;
+##  1 United Kingdom    15
+##  2 Canada            12
+##  3 Germany           10
+##  4 China              6
+##  5 Poland             6
+##  6 France             5
+##  7 Italy              5
+##  8 Japan              5
+##  9 Austria            4
+## 10 Hungary            4
+## # ℹ 27 more rows</code></pre>
+<p>UK is most common for US immigrants who won the nobel prize.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+/* styles.css */
+body {
+  background-color: #ffffff;
+}
+
+.navbar {
+  background-color: #cbd8e4 !important;
+}
+
+.navbar a {
+  color: #2b6777 !important;
+}
+
+h1, h2, h3 {
+  color: #2b6777;
+}

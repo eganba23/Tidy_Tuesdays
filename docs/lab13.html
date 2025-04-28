@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 12 - Colonizing Mars</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 12 - Colonizing Mars</h1>
+
+</div>
+
+
+<div id="created-on-1292025" class="section level4">
+<h4>Created on 1/29/2025</h4>
+</div>
+<div id="completed-on-4232025" class="section level4">
+<h4>Completed on 4/23/2025</h4>
+<p>Link to assignment:<a
+href="https://datascience4psych.github.io/DataScience4Psych/lab13.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab13.html</a></p>
+<p>Link to archived assignment:<a
+href="https://web.archive.org/web/20250414135229/https://datascience4psych.github.io/DataScience4Psych/lab13.html#exercise-4-preparing-for-the-unexpected"
+class="uri">https://web.archive.org/web/20250414135229/https://datascience4psych.github.io/DataScience4Psych/lab13.html#exercise-4-preparing-for-the-unexpected</a></p>
+</div>
+<div id="exercise-1---simulating-colonists" class="section level3">
+<h3>Exercise 1 - Simulating colonists</h3>
+<pre class="r"><code>set.seed(123)
+
+age &lt;- rnorm(100, mean = 30, sd = 5)
+
+df_colonists &lt;- data.frame(id = 1:100, age)</code></pre>
+<pre class="r"><code>data.frame(df_colonists) %&gt;%
+ggplot(
+ aes(x=age)
+)+
+  theme_bw()+
+  geom_histogram(binwidth=2,color=&quot;black&quot;, fill=&quot;blue&quot;) +
+  labs(title = &quot;Histogram of Colonists Ages by Seed&quot;,
+       x = &quot;Age&quot;, y = &quot;Frequency&quot;)</code></pre>
+<p><img src="lab13_files/figure-html/1.1%20-%20visualizing%20base%20colonists-1.png" width="672" /></p>
+<p>This is an age distribution graph. It created a roughly normal
+distribution that is centered at 30. It looks like changing the seed
+makes the distribution more normal. The 100 seed looks normally
+distributed and the 1000 seed even more so. Looks like it’s due to
+random chance, as 999 seed doesn’t have the nice bellcurve shape.</p>
+<pre class="r"><code>role &lt;- rep(c(&quot;engineer&quot;, &quot;scientist&quot;, &quot;medic&quot;), 
+             each = 34, 
+             length.out = 100)
+
+df_colonists &lt;- df_colonists %&gt;%
+  mutate(role)
+
+print(role)</code></pre>
+<pre><code>##   [1] &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot; 
+##   [7] &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot; 
+##  [13] &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot; 
+##  [19] &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot; 
+##  [25] &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot; 
+##  [31] &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;engineer&quot;  &quot;scientist&quot; &quot;scientist&quot;
+##  [37] &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot;
+##  [43] &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot;
+##  [49] &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot;
+##  [55] &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot;
+##  [61] &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot; &quot;scientist&quot;
+##  [67] &quot;scientist&quot; &quot;scientist&quot; &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;    
+##  [73] &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;    
+##  [79] &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;    
+##  [85] &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;    
+##  [91] &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;    
+##  [97] &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;     &quot;medic&quot;</code></pre>
+<p>Here I assigned each of them roles. I chose this method mostly out of
+pure randomness. But I like that it listed out each role together.</p>
+<div id="health-can-be-measured-using-the-marsgar"
+class="section level4">
+<h4>Health can be measured using the MARSGAR</h4>
+<pre class="r"><code>set.seed(123)
+
+df_colonists$marsgar &lt;- runif(100, min = 40, max = 100)
+
+df_colonists %&gt;%
+ggplot( aes(
+    x = age,
+    y = marsgar
+  ) )+
+  theme_bw()+
+  geom_point()+
+  geom_smooth(method=lm, color = &quot;black&quot;,se = FALSE)+
+  labs(
+      x = &quot;Age&quot;,
+      y = &quot;MARSGAR&quot;,
+      title = &quot;Scatterplot of Age and Health&quot;
+  )</code></pre>
+<p><img src="lab13_files/figure-html/1.4%20heathy-1.png" width="672" /></p>
+</div>
+</div>
+<div id="exercise-2---growing-the-colonists-skills"
+class="section level3">
+<h3>Exercise 2 - Growing the colonists’ skills</h3>
+<pre class="r"><code>set.seed(1235)
+
+df_colonists$technical_skills &lt;- 2 * df_colonists$age + rnorm(100, mean = 0, sd = 1)
+
+
+df_colonists %&gt;%
+lm(technical_skills = 2 * age + noise)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = ., technical_skills = 2 * age + noise)
+## 
+## Coefficients:
+##      (Intercept)               age         rolemedic     rolescientist  
+##         11.42824           0.93744          67.73639          35.05438  
+##          marsgar  technical_skills  
+##          0.08384          -0.47441</code></pre>
+<pre class="r"><code>df_colonists %&gt;%
+  ggplot(aes(
+    x = age,
+    y = technical_skills
+  ))+
+  geom_point(alpha = .6)+
+  geom_line(stat = &quot;smooth&quot;, method=&quot;lm&quot;, alpha = .6, color = &quot;blue&quot;, se = FALSE)+
+  labs(
+    x = &quot;Age&quot;,
+    y = &quot;Technical Skill&quot;,
+    title = &quot;Scatterplot of Colonist Age and Technical Skills&quot;
+  )</code></pre>
+<p><img src="lab13_files/figure-html/2.1%20technical%20skills%20and%20visual-1.png" width="672" /></p>
+<p>Here we can see that age is about evenly distributed among the
+roles</p>
+<pre class="r"><code>df_colonists %&gt;%
+  ggplot(aes(
+    x = age,
+    y = technical_skills,
+    color = as.factor(role)
+  ))+
+  geom_point(alpha = .6)+
+  scale_color_manual(values=c(&quot;blue&quot;, &quot;red&quot;,&quot;green4&quot;))+
+  geom_line(stat = &quot;smooth&quot;, method=&quot;lm&quot;, alpha = .6, color = &quot;black&quot;, se = FALSE)+
+  labs(
+    x = &quot;Age&quot;,
+    y = &quot;Technical Skill&quot;,
+    color = &quot;Role&quot;,
+    title = &quot;Scatterplot of Colonist Age and Technical Skills by Role&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="lab13_files/figure-html/Plot%20age%20and%20tehcnical%20skill%20by%20role-1.png" width="672" /></p>
+</div>
+<div id="problem-solving-for-each-colonist" class="section level3">
+<h3>Problem solving for each colonist</h3>
+<pre class="r"><code>d_engineer &lt;- rnorm(100, mean = 40, sd = 5)
+d_scientist &lt;- rnorm(100, mean = 60, sd = 7)
+d_medic &lt;- rnorm(100, mean = 90, sd = 2)
+
+
+
+df_colonists &lt;- df_colonists %&gt;%
+mutate(problem_solving = case_when(
+    role == &quot;engineer&quot; ~ d_engineer,
+    role == &quot;scientist&quot; ~ d_scientist,
+    role == &quot;medic&quot; ~ d_medic
+  ))
+
+
+df_colonists %&gt;%
+  ggplot(aes(
+    x = problem_solving,
+    color = role,
+    fill = role
+  ))+
+scale_fill_manual(values=c(&quot;blue&quot;, &quot;red&quot;,&quot;green4&quot;))+
+  scale_color_manual(values=c(&quot;blue&quot;, &quot;red&quot;,&quot;green4&quot;))+
+  geom_density(alpha = 0.7) +
+  theme_bw()+
+  labs(
+    y = NULL,
+    x = &quot;Level of Problem Solving&quot;
+  )</code></pre>
+<p><img src="lab13_files/figure-html/problem%20solving-1.png" width="672" /></p>
+</div>
+<div id="using-mvrnorm" class="section level2">
+<h2>Using mvrnorm</h2>
+<pre class="r"><code>mean_traits &lt;- c(50, 50)
+cov_matrix &lt;- matrix(c(100, 50, 
+                       50, 100), ncol = 2)
+
+
+
+traits_data &lt;- mvrnorm(n = 100, mu = mean_traits, Sigma = cov_matrix, empirical = FALSE)
+
+colnames(traits_data) &lt;- c(&quot;resilience&quot;, &quot;agreeableness&quot;)
+
+df_colonists &lt;- cbind(df_colonists, traits_data)
+
+
+df_colonists %&gt;%
+  ggplot(aes(
+    x = resilience,
+    y = agreeableness
+  ))+
+    geom_point()+
+  geom_line(stat = &quot;smooth&quot;, method=&quot;lm&quot;, alpha = .6, color = &quot;blue&quot;, se = FALSE)</code></pre>
+<p><img src="lab13_files/figure-html/simulate%20resilience%20and%20agreeableness-1.png" width="672" /></p>
+<p>I used the code provided to create a correlation matrix for the big
+5</p>
+<pre class="r"><code>seed &lt;- 123
+set.seed(123)
+
+
+n_colonists &lt;- 100
+
+
+var_names &lt;- c( &quot;EX&quot;, &quot;ES&quot;, &quot;AG&quot;, &quot;CO&quot;, &quot;OP&quot;)
+
+mean_traits &lt;- c(-.5, .5, .25, .5, 0)
+sd_traits &lt;- c(1, .9, 1, 1, 1)
+
+
+cor_matrix_bigfive &lt;- matrix(c(
+1.0000, 0.2599, 0.1972, 0.1860, 0.2949,
+0.2599, 1.0000, 0.1576, 0.2306, 0.0720,
+0.1972, 0.1576, 1.0000, 0.2866, 0.1951,
+0.1860, 0.2306, 0.2866, 1.0000, 0.1574,
+0.2949, 0.0720, 0.1951, 0.1574, 1.0000
+), nrow=5, ncol=5, byrow=TRUE,
+dimnames=list(c(&quot;EX&quot;, &quot;ES&quot;, &quot;AG&quot;, &quot;CO&quot;, &quot;OP&quot;), 
+c(&quot;EX&quot;, &quot;ES&quot;, &quot;AG&quot;, &quot;CO&quot;, &quot;OP&quot;)))
+
+
+eigen_values &lt;- eigen(cor_matrix_bigfive)$values
+is_positive_definite &lt;- all(eigen_values &gt; 0)
+
+
+cov_matrix_bigfive &lt;- cor_matrix_bigfive * (sd_traits %*% t(sd_traits))
+
+
+simulated_data &lt;- mvrnorm(n = 100, mu = mean_traits, Sigma = cov_matrix_bigfive)
+
+
+simulated_data &lt;- cbind.data.frame(colonist_id = 1:n_colonists,
+seed = seed,
+simulated_data)
+
+simulated_data$seed &lt;- NULL
+
+view(simulated_data)</code></pre>
+</div>
+<div id="preparing-for-the-unexpected" class="section level2">
+<h2>Preparing for the unexpected</h2>
+<p>I tried using a while() loop, but chat suggested using a for()
+loop.</p>
+<pre class="r"><code>max_colonies &lt;- 100
+n_colonists &lt;- 100
+MARSid_counter &lt;- 1
+
+var_names &lt;- c( &quot;EX&quot;, &quot;ES&quot;, &quot;AG&quot;, &quot;CO&quot;, &quot;OP&quot;)
+
+mean_traits &lt;- c(-.5, .5, .25, .5, 0)
+sd_traits &lt;- c(1, .9, 1, 1, 1)
+
+cor_matrix_bigfive &lt;- matrix(c(
+1.0000, 0.2599, 0.1972, 0.1860, 0.2949,
+0.2599, 1.0000, 0.1576, 0.2306, 0.0720,
+0.1972, 0.1576, 1.0000, 0.2866, 0.1951,
+0.1860, 0.2306, 0.2866, 1.0000, 0.1574,
+0.2949, 0.0720, 0.1951, 0.1574, 1.0000
+), nrow=5, ncol=5, byrow=TRUE,
+dimnames=list(c(&quot;EX&quot;, &quot;ES&quot;, &quot;AG&quot;, &quot;CO&quot;, &quot;OP&quot;), 
+c(&quot;EX&quot;, &quot;ES&quot;, &quot;AG&quot;, &quot;CO&quot;, &quot;OP&quot;)))
+
+
+cov_matrix_bigfive &lt;- cor_matrix_bigfive * (sd_traits %*% t(sd_traits))
+
+all_colonies &lt;- list()
+
+for (colony in 1:max_colonies) {
+  set.seed(123 + colony)
+  
+  traits_data &lt;- mvrnorm(n = n_colonists, mu = mean_traits, Sigma = cov_matrix_bigfive)
+  
+  df &lt;- data.frame(
+    colony = colony,
+    id_in_colony = 1:n_colonists,
+    MARSid = MARSid_counter:(MARSid_counter + n_colonists - 1),
+    seed = 123 + colony,
+    traits_data
+  )
+  names(df)[5:9] &lt;- var_names
+  
+  all_colonies[[colony]] &lt;- df
+  MARSid_counter &lt;- MARSid_counter + n_colonists
+}
+
+big_simulated_data &lt;- do.call(rbind, all_colonies)
+big_simulated_data$seed &lt;- NULL</code></pre>
+<pre class="r"><code>colonies_means &lt;- big_simulated_data %&gt;% 
+  group_by(colony) %&gt;% 
+  summarise(mean_ex = mean(EX),
+            mean_es = mean(ES),
+            mean_ag = mean(AG),
+            mean_co = mean(CO),
+            mean_op = mean(OP)
+            )
+
+means_long &lt;- colonies_means %&gt;%
+  pivot_longer(cols = -colony)
+
+colonies_means &lt;- means_long %&gt;%
+  mutate(big_5 = case_when(
+    name == &quot;mean_ex&quot; ~ &quot;Extraversion&quot;,
+    name == &quot;mean_es&quot; ~ &quot;Neuroticism&quot;,
+    name == &quot;mean_ag&quot; ~ &quot;Agreeableness&quot;,
+    name == &quot;mean_co&quot; ~ &quot;Conscientiousness&quot;,
+    name == &quot;mean_op&quot; ~ &quot;Openess&quot;
+  ))
+
+names(colonies_means)[names(colonies_means) == &quot;value&quot;] &lt;- &quot;Mean&quot;
+
+colonies_sd &lt;- big_simulated_data %&gt;% 
+  group_by(colony) %&gt;% 
+  summarise(
+            sd_ex = sd(EX),
+            sd_es = sd(ES),
+            sd_ag = sd(AG),
+            sd_co = sd(CO),
+            sd_op = sd(OP)
+            )
+
+sd_long &lt;- colonies_sd %&gt;%
+  pivot_longer(cols = -colony)
+
+colonies_sd &lt;- sd_long %&gt;%
+  mutate(big_5 = case_when(
+    name == &quot;sd_ex&quot; ~ &quot;Extraversion&quot;,
+    name == &quot;sd_es&quot; ~ &quot;Neuroticism&quot;,
+    name == &quot;sd_ag&quot; ~ &quot;Agreeableness&quot;,
+    name == &quot;sd_co&quot; ~ &quot;Conscientiousness&quot;,
+    name == &quot;sd_op&quot; ~ &quot;Openess&quot;
+  ))
+
+names(colonies_sd)[names(colonies_sd) == &quot;value&quot;] &lt;- &quot;Standard Deviation&quot;
+
+
+
+colonies_stats &lt;- full_join(colonies_means, colonies_sd, by = c(&quot;colony&quot;, &quot;big_5&quot;))
+
+
+
+view(colonies_stats)</code></pre>
+<pre class="r"><code>means_big_data %&gt;%
+ggplot(
+  aes(x = mean_ex)) +
+  geom_histogram(color = &quot;black&quot;, fill = &quot;blue&quot;, bins = 20) +
+  labs(
+    x = &quot;Mean Extraversion&quot;, 
+    y = NULL,
+    title = &quot;Distribution of Extraversion Mean&quot;,
+    subtitle = &quot;Possible values range from -1 to 1&quot;
+    )+
+  geom_vline(xintercept = -0.5, 
+             color = &quot;white&quot;,
+             linetype = &quot;dashed&quot;) +
+  annotate(&quot;text&quot;, 
+           x = -0.44, y = Inf, 
+           label = &quot;Population Mean = -0.5&quot;, 
+           vjust = 2, 
+           color = &quot;black&quot;)
+
+
+
+means_big_data %&gt;%
+ggplot(
+  aes(x = sd_ex)) +
+  geom_histogram(color = &quot;black&quot;, fill = &quot;red3&quot;, bins = 20) +
+  labs(
+    x = &quot;SD Extraversion&quot;,
+    y = NULL,
+    title = &quot;Distribution of Extraversion Standard Deviation&quot;)+
+  geom_vline(xintercept = 1, 
+             color = &quot;black&quot;, 
+             linetype = &quot;dashed&quot;) +
+  annotate(&quot;text&quot;, 
+           x = .96, y = Inf, 
+           label = &quot;Population SD = 1&quot;, 
+           vjust = 2,
+           color = &quot;black&quot;) 
+
+#correlation
+means_big_data %&gt;%
+  ggplot(aes(
+   x = mean_ex,
+   y = mean_op
+   ))+
+  geom_point(alpha = .6)+
+  geom_smooth(method=&#39;lm&#39;, se = FALSE, formula= y~x)+
+  stat_cor(method = &quot;pearson&quot;, label.x = -.35, label.y = .03)+
+  labs(
+    x = &quot;Extraversion Means&quot;,
+    y = &quot;Openness Means&quot;,
+    title = &quot;Correlation of Extraversion and Openness across Colonies&quot;
+  )
+
+#distribution of correlation
+means_big_data %&gt;%
+ggplot(aes(x = cor_ex_op)) +
+  geom_histogram(color = &quot;white&quot;, fill = &quot;pink&quot;, bins = 20) +
+  labs(
+    x = &quot;Correlation&quot;, 
+    y = &quot;Count&quot;, 
+    title = &quot;Distribution of Correlations of Extraversion and Openness across Colonies&quot;)+
+    geom_vline(xintercept = 0.2949, 
+               color = &quot;black&quot;, 
+               linetype = &quot;dashed&quot;) +
+  annotate(&quot;text&quot;, 
+           x = 0.21, y = Inf, 
+           label = &quot;Population Correlation = 0.295&quot;, 
+           vjust = 2, 
+           color = &quot;black&quot;)</code></pre>
+<p>For some reason I worked on it earlier and it ran, but now it
+doesn’t. This has something to do with me moving things around and not
+realizing I altered them. I asked chatGPT to recreate what I wanted.</p>
+<pre class="r"><code># First, augment colonies_stats with cross‐colony correlations of EX and OP
+cor_ex_op &lt;- big_simulated_data %&gt;%
+  group_by(colony) %&gt;%
+  summarize(cor_ex_op = cor(EX, OP))
+
+# Join that back into colonies_means / colonies_sd
+colonies_stats &lt;- colonies_stats %&gt;%
+  left_join(cor_ex_op, by = &quot;colony&quot;)
+
+# -----------------------------------------------------------------
+colonies_stats %&gt;%
+  filter(big_5 == &quot;Extraversion&quot;) %&gt;%
+  ggplot(aes(x = Mean)) +
+  geom_histogram(color = &quot;black&quot;, fill = &quot;blue&quot;, bins = 20) +
+  labs(
+    x = &quot;Mean Extraversion&quot;,
+    y = NULL,
+    title = &quot;Distribution of Extraversion Mean&quot;,
+    subtitle = &quot;Possible values range from -1 to 1&quot;
+  ) +
+  geom_vline(xintercept = -0.5, linetype = &quot;dashed&quot;) +
+  annotate(&quot;text&quot;, x = -0.44, y = Inf, label = &quot;Population Mean = -0.5&quot;, vjust = 2)</code></pre>
+<p><img src="lab13_files/figure-html/chat%20recreation%20of%20above-1.png" width="672" /></p>
+<pre class="r"><code># -----------------------------------------------------------------
+colonies_stats %&gt;%
+  filter(big_5 == &quot;Extraversion&quot;) %&gt;%
+  ggplot(aes(x = `Standard Deviation`)) +
+  geom_histogram(color = &quot;black&quot;, fill = &quot;red3&quot;, bins = 20) +
+  labs(
+    x = &quot;SD Extraversion&quot;,
+    y = NULL,
+    title = &quot;Distribution of Extraversion Standard Deviation&quot;
+  ) +
+  geom_vline(xintercept = 1, linetype = &quot;dashed&quot;) +
+  annotate(&quot;text&quot;, x = 0.96, y = Inf, label = &quot;Population SD = 1&quot;, vjust = 2)</code></pre>
+<p><img src="lab13_files/figure-html/chat%20recreation%20of%20above-2.png" width="672" /></p>
+<pre class="r"><code># -----------------------------------------------------------------
+# Distribution of per‐colony EX–OP correlations
+colonies_stats %&gt;%
+  ggplot(aes(x = cor_ex_op)) +
+  geom_histogram(color = &quot;white&quot;, fill = &quot;pink&quot;, bins = 20) +
+  labs(
+    x = &quot;Correlation&quot;,
+    y = &quot;Count&quot;,
+    title = &quot;Distribution of Correlations of Extraversion and Openness&quot;
+  ) +
+  geom_vline(xintercept = 0.2949, linetype = &quot;dashed&quot;) +
+  annotate(&quot;text&quot;, x = 0.21, y = Inf, label = &quot;Population Corr = 0.295&quot;, vjust = 2)</code></pre>
+<p><img src="lab13_files/figure-html/chat%20recreation%20of%20above-3.png" width="672" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

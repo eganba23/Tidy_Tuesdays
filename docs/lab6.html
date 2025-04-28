@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 06 - Ugly charts and Simpson’s paradox</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 06 - Ugly charts and Simpson’s
+paradox</h1>
+
+</div>
+
+
+<div id="created-2172025" class="section level4">
+<h4>Created 2/17/2025</h4>
+<p>link to assignment: <a
+href="https://datascience4psych.github.io/DataScience4Psych/lab06.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab06.html</a></p>
+<p>link to archived assignment: <a
+href="https://web.archive.org/web/20250414135309/https://datascience4psych.github.io/DataScience4Psych/lab06.html"
+class="uri">https://web.archive.org/web/20250414135309/https://datascience4psych.github.io/DataScience4Psych/lab06.html</a></p>
+</div>
+<div id="exercise-1" class="section level3">
+<h3>Exercise 1</h3>
+<pre class="r"><code>staff_long &lt;- staff %&gt;%
+  pivot_longer(cols = -faculty_type, names_to = &quot;year&quot;) %&gt;%
+  mutate(value = as.numeric(value))</code></pre>
+</div>
+<div id="staff-by-year-graph" class="section level3">
+<h3>Staff by Year Graph</h3>
+<pre class="r"><code>staff_long %&gt;%
+  ggplot(aes(
+    x = year,
+    y = value,
+    group = faculty_type,
+    color = faculty_type
+  )) +
+  geom_line()+
+  theme_bw()+
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Percent of Total Instructional Staff&quot;,
+    title = &quot;Trends in Instructional Staff Employee Status&quot;,
+    color = &quot;Faculty Status&quot;
+  )</code></pre>
+<p><img src="lab6_files/figure-html/graph-1.png" width="768" /></p>
+</div>
+<div id="fisheries-graph" class="section level3">
+<h3>Fisheries Graph</h3>
+<pre class="r"><code>fisheries &lt;- read_csv(&quot;data/fisheries.csv&quot;)</code></pre>
+<pre><code>## Rows: 216 Columns: 4
+## ── Column specification ───────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): country
+## dbl (3): capture, aquaculture, total
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>view(fisheries)</code></pre>
+<p>Looking at this data set, we have four variables. Country, capture,
+aquaculture, and total. Based on their data, it’s clear that China leads
+aquaculture by a landslide. One way we could visualize this is by taking
+out China and individually reporting their statistics. It would help
+with the visual. Another way to help would be to create two separate
+graphs, one for aquaculture and one for capture. The third way (the one
+I am picking to visualize) is to show the top 10 fisheries in the total
+column. From there, I would indicate the proportion of the total fish
+obtained via aquaculture and capture. There is probably a better way to
+visualize it, but for now I overlay a bar plot of the amount obtained by
+aquaculture with a blank bar plot of the total amount of fish (to give
+the illusion of the rest being by capture.)</p>
+<pre class="r"><code>top_10 &lt;- fisheries %&gt;%
+  arrange(desc(total)) %&gt;%
+    slice(1:10) 
+
+
+top_10 %&gt;% ggplot(aes(
+  x = fct_reorder(country, total),
+  y = total
+)) +
+  geom_bar(stat = &quot;identity&quot;, aes(y = aquaculture), alpha = .6, fill = &quot;salmon&quot;)+
+  geom_bar(stat = &quot;identity&quot;, fill = NA, color = &quot;Black&quot;)+
+  coord_flip()+
+  labs(
+    x = &quot;Country&quot;,
+    y = &quot;Amount in Tons&quot;,
+    title = &quot;Tonnage of Fish captured&quot;,
+    subtitle = &quot;Salmon indicates the proportion farmed via aquaculture instead of capture&quot;
+  ) </code></pre>
+<p><img src="lab6_files/figure-html/visual%20for%20fisheries-1.png" width="960" /></p>
+</div>
+<div id="mosaic-data" class="section level2">
+<h2>Mosaic Data</h2>
+<div id="qa-answers" class="section level3">
+<h3>Q/A answers</h3>
+<pre class="r"><code>#Smoking Visual
+Whickham %&gt;%
+ggplot(aes(
+   x=age,
+   fill = fct_rev(smoker)
+   )) + 
+    geom_histogram(color = &quot;black&quot;)+
+  theme_bw()+
+  labs(
+    x = &quot;Age&quot;,
+    y = &quot;&quot;,
+    title = &quot;Smokers and non smokers at baseline&quot;,
+    fill = &quot;Are they a smoker?&quot;
+  )+
+    theme(plot.title = element_text(size = 20),
+        axis.title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        )</code></pre>
+<p><img src="lab6_files/figure-html/Q/A%20answers-1.png" width="1152" /></p>
+<pre class="r"><code>#Death Visual
+Whickham %&gt;%
+ggplot(aes(
+   x=age,
+   fill = fct_rev(outcome)
+   )) + 
+    geom_histogram(color = &quot;black&quot;)+
+  theme_bw()+
+    labs(
+    x = &quot;Age&quot;,
+    y = &quot;&quot;,
+    title = &quot;Survival status after 20 years&quot;,
+    fill = &quot;Are they still alive?&quot;
+  )+
+    theme(plot.title = element_text(size = 20),
+        axis.title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        )</code></pre>
+<p><img src="lab6_files/figure-html/Q/A%20answers-2.png" width="1152" /></p>
+<pre class="r"><code>#create distinguishing variable
+Whickham_alter &lt;- Whickham %&gt;%
+  mutate(Specific = case_when(
+    smoker == &quot;Yes&quot; &amp; outcome == &quot;Dead&quot; ~ &quot;Dead smoker&quot;,
+    smoker == &quot;Yes&quot; &amp; outcome == &quot;Alive&quot; ~ &quot;Alive smoker&quot;,
+    smoker == &quot;No&quot; &amp; outcome == &quot;Dead&quot; ~ &quot;Dead non-smoker&quot;,
+    smoker == &quot;No&quot; &amp; outcome == &quot;Alive&quot; ~ &quot;Alive non-smoker&quot;
+      ))
+
+#visual for all groups
+Whickham_alter %&gt;%
+ggplot(aes(
+   x=age,
+   fill = Specific
+   )) + 
+    geom_histogram(color = &quot;black&quot;)+
+  theme_bw()+
+  facet_wrap(~Specific)+
+    labs(
+    x = &quot;Age&quot;,
+    y = &quot;&quot;,
+    title = &quot;Survival status after 20 years&quot;,
+    fill = &quot;Survival status and baseline smoking&quot;
+  )+
+    theme(plot.title = element_text(size = 20),
+        axis.title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        )</code></pre>
+<p><img src="lab6_files/figure-html/Q/A%20answers-3.png" width="1152" /></p>
+<ol style="list-style-type: decimal">
+<li><p>This was an observational study, since they weren’t trying out an
+intervention for smoking.</p></li>
+<li><p>There were 1314 observations in this data set (all
+women)</p></li>
+<li><p>There are three variables; outcome, smoker, and age. Outcome is a
+categorical variable with answers (Alive or Dead). Smoker is a
+categorical variable with answers (No or Yes). Age is a continuous
+numerical variable that recorded their age in years.</p></li>
+<li><p>Based on the two simple graphs I made, I would expect that
+smoking decreasing your health, leading to earlier death. The more
+complex graph shows me that there is a more spread out distriubtion of
+death in the smokers than htere is for the non-smokers.</p></li>
+</ol>
+</div>
+<div id="a-different-visual" class="section level3">
+<h3>A different visual</h3>
+<pre class="r"><code>Whickham %&gt;%
+  count(smoker, outcome) %&gt;%
+  group_by(outcome) %&gt;%
+  mutate(percent_outcome = (n / sum(n))*100)</code></pre>
+<pre><code>## # A tibble: 4 × 4
+## # Groups:   outcome [2]
+##   smoker outcome     n percent_outcome
+##   &lt;fct&gt;  &lt;fct&gt;   &lt;int&gt;           &lt;dbl&gt;
+## 1 No     Alive     502            53.1
+## 2 No     Dead      230            62.3
+## 3 Yes    Alive     443            46.9
+## 4 Yes    Dead      139            37.7</code></pre>
+<pre class="r"><code>ggplot(Whickham, aes(y = smoker, 
+                     fill = outcome)) +
+  geom_bar(position = &quot;fill&quot;) + 
+  labs(title = &quot;Smoking outcome&quot;,
+       y = &quot;Did they smoke?&quot;, x = NULL)</code></pre>
+<p><img src="lab6_files/figure-html/visuals%20asked%20for-1.png" width="672" /></p>
+<pre class="r"><code>Whickham_age_breakdown &lt;- Whickham_alter %&gt;%
+ mutate(age_cat = case_when(
+    age &lt;= &quot;44&quot; ~ &quot;18-44&quot;,
+    age &gt; &quot;44&quot; &amp; age &lt;= &quot;64&quot; ~ &quot;45-64&quot;,
+    age &gt; &quot;64&quot; ~ &quot;65+&quot;,
+      ))
+
+Whickham_age_breakdown %&gt;%
+ ggplot(aes(
+   y = fct_rev(smoker), 
+   fill = fct_rev(outcome))) +
+  geom_bar(position = &quot;fill&quot;) + 
+   facet_wrap(~age_cat)+
+  labs(title = &quot;Smoking outcome&quot;,
+     y = &quot;Did they Smoke?&quot;, x = NULL)</code></pre>
+<p><img src="lab6_files/figure-html/age%20breakdown-1.png" width="960" /></p>
+<p>Have to say, it’s hard to see the difference in this graph. I
+included the table below. It looks like there are more people alive
+longer based on the counts for the 65+ category.</p>
+<pre class="r"><code>Whickham_age_breakdown %&gt;%
+  count(age_cat, smoker, outcome) %&gt;%
+  group_by(outcome) %&gt;%
+  mutate(percent_outcome = (n / sum(n))*100)</code></pre>
+<pre><code>## # A tibble: 12 × 5
+## # Groups:   outcome [2]
+##    age_cat smoker outcome     n percent_outcome
+##    &lt;chr&gt;   &lt;fct&gt;  &lt;fct&gt;   &lt;int&gt;           &lt;dbl&gt;
+##  1 18-44   No     Alive     327          34.6  
+##  2 18-44   No     Dead       12           3.25 
+##  3 18-44   Yes    Alive     270          28.6  
+##  4 18-44   Yes    Dead       15           4.07 
+##  5 45-64   No     Alive     147          15.6  
+##  6 45-64   No     Dead       53          14.4  
+##  7 45-64   Yes    Alive     167          17.7  
+##  8 45-64   Yes    Dead       80          21.7  
+##  9 65+     No     Alive      28           2.96 
+## 10 65+     No     Dead      165          44.7  
+## 11 65+     Yes    Alive       6           0.635
+## 12 65+     Yes    Dead       44          11.9</code></pre>
+</div>
+</div>
+<div id="additional-plot" class="section level2">
+<h2>Additional Plot</h2>
+<p>A suggestion for how to make the visual easier to see? You can more
+clearly see in this plot that the distribution of people who’s status is
+different based on smoking status. Smokers have a more even distribution
+while non-smokers are clearly skewed.</p>
+<pre class="r"><code>Whickham_age_breakdown %&gt;%
+ggplot(aes(
+   x=age_cat,
+   fill = Specific
+   )) + 
+    geom_histogram(stat = &quot;count&quot;, color = &quot;black&quot;)+
+  theme_bw()+
+  facet_wrap(~Specific)+
+    labs(
+    x = &quot;Age&quot;,
+    y = &quot;&quot;,
+    title = &quot;Survival status after 20 years&quot;,
+    fill = &quot;Survival status and baseline smoking&quot;
+  )+
+    theme(plot.title = element_text(size = 20),
+        axis.title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        )</code></pre>
+<p><img src="lab6_files/figure-html/additional%20plot-1.png" width="960" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

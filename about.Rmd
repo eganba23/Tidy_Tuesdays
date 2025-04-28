@@ -1,0 +1,14 @@
+---
+title: "About This Website"
+---
+
+Hello again! 
+
+<p align="center">
+  <img src="pic_of_me.jpeg" width="300px" />
+</p>
+
+
+My name is Benjamin Egan. As I mentioned, this website serves as a collection of assignments I created for Wake Forest University's course on [Data Science for Psychologists](https://datascience4psych.github.io/DataScience4Psych/). If you want a full list of my work, please check out [my github page](https://github.com/eganba23), as it can provide you with more up to date projects.
+
+[A copy of my CV, as of April 8th](Egan_CV_4-8-25.pdf)

@@ -1,0 +1,192 @@
+---
+title: "Lab 10 - Grading the professor, Pt. 1"
+output: html_document
+---
+
+#### Created 3/17/2025
+
+Here is the link to the assignment page: https://datascience4psych.github.io/DataScience4Psych/lab10.html. This includes the relevant information for the assignment alongside required questions I needed to answer.
+
+Here is a link to an archived version of the assignment: https://web.archive.org/web/20250414135204/https://datascience4psych.github.io/DataScience4Psych/lab10.html
+
+```{r load-packages, message=FALSE, warning = FALSE, echo = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(tidymodels)
+library(openintro)
+library(moments)
+```
+
+# Part 1 - Exploratory Data Analysis
+
+
+
+```{r score distribution, message = FALSE}
+
+view(evals)
+
+evals %>%
+  ggplot(aes(
+    x = score
+  ))+
+  geom_histogram(color = "white")+
+  labs(
+    x = "Score",
+    y = NULL,
+    title = "Distribution of Scores",
+    subtitle = "Average professor evaluation score: (1) very unsatisfactory - (5) excellent"
+  )
+
+skewness(evals$score)
+median(evals$score)
+mean(evals$score)
+
+```
+
+This distribution appears to be negatively skewed (-.699), with the majority of the scores falling above four (median = 4.3, mean = 4.17)
+
+
+``` {r rating and beauty relationship, message = FALSE}
+
+attractive_score <- evals %>%
+  ggplot(aes(
+    x = score,
+    y = bty_avg
+  ))+
+  labs(
+    x = "Score",
+    y = "Beauty rating",
+    title = "Relationship between professor rating and attractiveness",
+    subtitle = "Average professor evaluation score: (1) very unsatisfactory - (5) excellent"
+  )
+
+attractive_score + geom_smooth(se = FALSE, color = "black", span = 1)
+
+```
+
+Based on this graph, I would say there is a positive relationship between professor ratings and perceived attractiveness.
+
+### Replication with geom_jitter()
+
+I changed the visualization to use geom_point() instead of geom_smooth(), which makes using geom_jitter() understandable.
+
+``` {r updated rating and beauty relationship, message = FALSE}
+
+attractive_score + geom_point() + geom_smooth(se = FALSE, color = "black", span = .5)
+
+attractive_score + geom_jitter(width = .05) + geom_smooth(se = FALSE, color = "black", span = .5)
+
+```
+
+geom_jitter() can be extremely useful in visualizing the relationship between a continuous variable and a discrete variable (i.e. a likert scale). The scatterplot utilizing geom_point() can be visually misleading, as you cannot tell if data overlap.
+
+## Linear Regression with a numerical predictor
+
+```{r replot with regression, message = FALSE}
+
+m_bty <- lm(score ~ bty_avg, data = evals)
+
+summary(m_bty)
+
+attractive_score + 
+  geom_jitter(width = .05, alpha = .6)+ 
+  geom_smooth(se = FALSE, color = "blue", span = .5)+
+  geom_abline(intercept = 3.88034, slope = 0.06664, color ="orange", size = 1)
+
+```
+
+The regression equation should be y = 3.88 + .067x, where y is score and x = average beauty rating.
+
+This line tells us for every 1 unit increase in beauty rating, there is a .067 increase in instructor score. In other words, a change in one variable has little impact in the other. The intercept of 3.88 means that an instructor with a beauty score of "0" would have an average instructor score of 3.88. This means that someone perceived as unattractive will still perform above average.
+
+R squared is .033, an indication of the degree to which individuals scores on one variable can predict the scores on the other. In this case, average beauty of instructors can only account for about 3% of the variance explained by instructor scores. I would summarize this as "beauty doesn't affect evaluation."
+
+
+## Linear Regression with a categorical predictor
+
+```{r categorical regression - Gender}
+
+m_gen <- lm(score ~ gender, data = evals)
+
+summary(m_gen)
+
+```
+
+The regression equation should be y = 4.09 + .142x, where y is score and x is gender.
+
+```{r graph gender regression}
+
+gender_score <- evals %>%
+  ggplot(aes(
+    x = score,
+    y = gender
+  ))+
+  labs(
+    x = "Score",
+    y = "Gender",
+    title = "Relationship between professor rating and Gender",
+    subtitle = "Average professor evaluation score: (1) very unsatisfactory - (5) excellent"
+  )
+
+gender_score + geom_point()
+
+```
+
+With a quick graph using gender as the y variable, it looks like female is being coded as less than a male, indicating that an increase in X is associated with going from female to male. yfemale = 4.09, ymale = 5.51 
+
+
+```{r rank regression}
+
+m_rank <- lm(score ~ rank, data = evals)
+
+m_rank
+summary(m_rank)
+
+```
+
+Regression equations:
+y = 4.28 - .130x, where y is score and x is signifying either teaching or tenure track.
+y = 4.28 - .145x, where y is score and x is signifying either teaching or tenure.
+
+
+```{r new relevel rank}
+
+evals$rank_relevel <- relevel(evals$rank, ref = "tenure track")
+
+m_rank_relevel <- lm(score ~ rank_relevel, data = evals)
+
+m_rank_relevel
+summary(m_rank_relevel)
+
+```
+
+
+Regression equations:
+y = 4.155 + .130x, where y is score and x is signifying either tenure track or teaching
+y = 4.155 - .016x, where y is score and x is signifying either tenure track or tenured
+
+R squared is .007, an indication of the degree to which individuals scores on one variable can predict the scores on the other. In this case, rank of instructors can only account for about .7% of the variance explained by instructor scores. I would summarize this as "rank doesn't affect evaluation."
+
+
+```{r rank dichotomy}
+
+evals <- evals %>%
+  mutate(tenure_eligible = case_when(
+    rank %in% c("tenure track", "tenured") ~ "yes",
+    rank == "teaching" ~ "no"
+  ))
+
+m_tenure_eligible <- lm(score ~ tenure_eligible, data = evals)
+
+m_tenure_eligible
+summary(m_tenure_eligible)
+
+
+```
+
+The regression equation should be y = 4.28 - .141x, where y is score and x is tenure eligibility. This tells us the change from non-tenure track to tenure track equates for a .141 decrease in instructor score. The R squared value is .009. This means that tenure eligibility essentially does not explain variation in professor ratings.
+
+
+picture
+google to find cool stuff (digital cv, etc.)
+create website includes all my work

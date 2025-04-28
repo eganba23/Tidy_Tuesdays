@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 11 - Grading the professor, Pt. 2</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 11 - Grading the professor, Pt. 2</h1>
+
+</div>
+
+
+<div id="created-3252025" class="section level4">
+<h4>Created 3/25/2025</h4>
+<p>This is the link to the assignment page (<a
+href="https://datascience4psych.github.io/DataScience4Psych/lab11.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab11.html</a>).
+This includes the relevant information for the assignment alongside
+required questions I needed to answer.</p>
+<p>This is an archived version of the assignment page: <a
+href="https://web.archive.org/web/20250414140905/https://datascience4psych.github.io/DataScience4Psych/lab11.html#set-a-seed"
+class="uri">https://web.archive.org/web/20250414140905/https://datascience4psych.github.io/DataScience4Psych/lab11.html#set-a-seed</a></p>
+</div>
+<div id="simple-linear-regression" class="section level2">
+<h2>Simple Linear Regression</h2>
+<pre class="r"><code>view(evals)
+
+m_bty &lt;- lm(score ~ bty_avg, data = evals)
+
+summary(m_bty)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ bty_avg, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.9246 -0.3690  0.1420  0.3977  0.9309 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.88034    0.07614   50.96  &lt; 2e-16 ***
+## bty_avg      0.06664    0.01629    4.09 5.08e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5348 on 461 degrees of freedom
+## Multiple R-squared:  0.03502,    Adjusted R-squared:  0.03293 
+## F-statistic: 16.73 on 1 and 461 DF,  p-value: 5.083e-05</code></pre>
+<p>Linear Model: y = 3.88 + .067x <br/> R-squared: .035 <br/> Adjusted
+R-squared: .033</p>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2>Multiple Linear Regression</h2>
+<pre class="r"><code>m_bty_gen &lt;- lm(score ~ bty_avg + gender, data = evals)
+
+summary(m_bty_gen)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ bty_avg + gender, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.8305 -0.3625  0.1055  0.4213  0.9314 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.74734    0.08466  44.266  &lt; 2e-16 ***
+## bty_avg      0.07416    0.01625   4.563 6.48e-06 ***
+## gendermale   0.17239    0.05022   3.433 0.000652 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5287 on 460 degrees of freedom
+## Multiple R-squared:  0.05912,    Adjusted R-squared:  0.05503 
+## F-statistic: 14.45 on 2 and 460 DF,  p-value: 8.177e-07</code></pre>
+<p>Linear model: y = 3.747 + .074(bty_avg) + .172(gender) <br/>
+R-squared: .059 <br/> Adjusted R-squared: .055 <br/></p>
+<div id="interpretation" class="section level4">
+<h4>Interpretation</h4>
+<p>intercept: A female with an average beauty rating of zero will get an
+evaluation of 3.7</p>
+<p>bty_avg slope: For people of the same gender, increasing their
+average beauty rating by one will only increase their evaluation score
+by .07</p>
+<p>gender slope: A male will have .172 higher eval score than a female
+with the same average beauty rating.</p>
+</div>
+<div id="questions-4-9" class="section level4">
+<h4>Questions 4-9</h4>
+<ol start="4" style="list-style-type: decimal">
+<li><p>This model (m_bty_gen) accounts for 5.5% of the variance in
+score</p></li>
+<li><p>For males: y = 3.747 + .074(bty_avg) + .172</p></li>
+<li><p>Males will tend to have the higher beauty rating compared to
+females</p></li>
+<li><p>Males have a slightly higher evaluation score (.172) than females
+for the same beauty rating.</p></li>
+<li><p>m_bty r-squared of .033 versus m_bty_gen r-squared of .055.
+Adding gender to the model only accounts for an additional 2.2% of the
+variance of score. I would say adding it made little difference in
+explaining evaluation scores.</p></li>
+<li><p>.067 bty_avg slope for the original model. .074 bty_avg slope for
+the model with gender. Adding gender meant that beauty rating of
+professor had a slightly increased “weight” for predicting
+score.</p></li>
+</ol>
+</div>
+<div id="replacing-gender-with-rank" class="section level3">
+<h3>Replacing gender with rank</h3>
+<pre class="r"><code>m_bty_rank &lt;- lm(score ~ bty_avg + rank, data = evals)
+
+summary(m_bty_rank)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ bty_avg + rank, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.8713 -0.3642  0.1489  0.4103  0.9525 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       3.98155    0.09078  43.860  &lt; 2e-16 ***
+## bty_avg           0.06783    0.01655   4.098 4.92e-05 ***
+## ranktenure track -0.16070    0.07395  -2.173   0.0303 *  
+## ranktenured      -0.12623    0.06266  -2.014   0.0445 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5328 on 459 degrees of freedom
+## Multiple R-squared:  0.04652,    Adjusted R-squared:  0.04029 
+## F-statistic: 7.465 on 3 and 459 DF,  p-value: 6.88e-05</code></pre>
+<p>Linear model: y = 3.982 + .068(bty_avg) - .161(tenure track) <br/>
+Linear model: y = 3.982 + .068(bty_avg) - .126(tenured)</p>
+<p>R-squared: .047 <br/> Adjusted R-squared: .040</p>
+<div id="interpretation-1" class="section level4">
+<h4>Interpretation</h4>
+<p>intercept: A teaching professor with an average beauty rating of zero
+will get an evaluation of 3.98</p>
+<p>bty_avg slope: For people of the same rank, increasing their average
+beauty rating by one will only increase their evaluation score by
+.068</p>
+<p>tenure track slope: A tenure track professor will have a .161 lower
+eval score than a teaching professor with the same average beauty
+rating.</p>
+<p>tenured slope: A tenured professor will have a .126 lower eval score
+than a teaching professor with the same average beauty rating.</p>
+</div>
+</div>
+</div>
+<div id="finding-the-best-model" class="section level2">
+<h2>Finding the best model</h2>
+<p>Going forward, I will only consider the following variables as
+potential predictors: rank, ethnicity, gender, language, age,
+cls_perc_eval, cls_did_eval, cls_students, cls_level, cls_profs,
+cls_credits, bty_avg.</p>
+<ol start="11" style="list-style-type: decimal">
+<li>Based on the predictors above, I would guess ethnicity would be the
+worst predictors.</li>
+</ol>
+<pre class="r"><code>worst_pred &lt;- lm(score ~ ethnicity, data = evals)
+
+summary(worst_pred)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ ethnicity, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.8912 -0.3816  0.1088  0.4088  0.9281 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            4.07187    0.06786  60.003   &lt;2e-16 ***
+## ethnicitynot minority  0.11935    0.07310   1.633    0.103    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5429 on 461 degrees of freedom
+## Multiple R-squared:  0.005749,   Adjusted R-squared:  0.003593 
+## F-statistic: 2.666 on 1 and 461 DF,  p-value: 0.1032</code></pre>
+<p>The Adjusted R-squared value is .0035, meaning that ethnicity
+accounts for around .35% of the variance in score</p>
+<ol start="13" style="list-style-type: decimal">
+<li>Since I’m already including the percent of students completing the
+eval and the total number of students, I think it wouldn’t make sense to
+include cls_did_eval (number of students who completed the eval). The
+information is already conveyed by the other two variables, and this
+addition would be redundant.</li>
+</ol>
+<div id="figuring-out-best-model" class="section level4">
+<h4>Figuring out best model</h4>
+<pre class="r"><code>evals$ethnicity_relevel &lt;- relevel(evals$ethnicity, ref = &quot;not minority&quot;)
+
+all_pred &lt;- lm(score ~ rank + ethnicity + gender + language + age + cls_perc_eval + cls_students + cls_level + cls_profs + cls_credits + bty_avg, data = evals)
+
+summary(all_pred)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ rank + ethnicity + gender + language + age + 
+##     cls_perc_eval + cls_students + cls_level + cls_profs + cls_credits + 
+##     bty_avg, data = evals)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.84482 -0.31367  0.08559  0.35732  1.10105 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            3.5305036  0.2408200  14.660  &lt; 2e-16 ***
+## ranktenure track      -0.1070121  0.0820250  -1.305 0.192687    
+## ranktenured           -0.0450371  0.0652185  -0.691 0.490199    
+## ethnicitynot minority  0.1869649  0.0775329   2.411 0.016290 *  
+## gendermale             0.1786166  0.0515346   3.466 0.000579 ***
+## languagenon-english   -0.1268254  0.1080358  -1.174 0.241048    
+## age                   -0.0066498  0.0030830  -2.157 0.031542 *  
+## cls_perc_eval          0.0056996  0.0015514   3.674 0.000268 ***
+## cls_students           0.0004455  0.0003585   1.243 0.214596    
+## cls_levelupper         0.0187105  0.0555833   0.337 0.736560    
+## cls_profssingle       -0.0085751  0.0513527  -0.167 0.867458    
+## cls_creditsone credit  0.5087427  0.1170130   4.348  1.7e-05 ***
+## bty_avg                0.0612651  0.0166755   3.674 0.000268 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.504 on 450 degrees of freedom
+## Multiple R-squared:  0.1635, Adjusted R-squared:  0.1412 
+## F-statistic: 7.331 on 12 and 450 DF,  p-value: 2.406e-12</code></pre>
+<pre class="r"><code>evals$ethnicity_relevel &lt;- relevel(evals$ethnicity, ref = &quot;not minority&quot;)
+
+best_model &lt;- lm(score ~  ethnicity_relevel + gender + language + age + cls_perc_eval + cls_students + cls_credits + bty_avg, data = evals)
+
+summary(best_model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ ethnicity_relevel + gender + language + 
+##     age + cls_perc_eval + cls_students + cls_credits + bty_avg, 
+##     data = evals)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.89519 -0.31227  0.08596  0.37022  1.09853 
+## 
+## Coefficients:
+##                             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                3.5907568  0.1977629  18.157  &lt; 2e-16 ***
+## ethnicity_relevelminority -0.2044482  0.0746764  -2.738 0.006428 ** 
+## gendermale                 0.1768250  0.0503142   3.514 0.000485 ***
+## languagenon-english       -0.1511723  0.1035293  -1.460 0.144930    
+## age                       -0.0048725  0.0026073  -1.869 0.062298 .  
+## cls_perc_eval              0.0057538  0.0015405   3.735 0.000212 ***
+## cls_students               0.0004073  0.0003428   1.188 0.235355    
+## cls_creditsone credit      0.5230953  0.1050306   4.980 9.03e-07 ***
+## bty_avg                    0.0618985  0.0165267   3.745 0.000203 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5028 on 454 degrees of freedom
+## Multiple R-squared:  0.1602, Adjusted R-squared:  0.1454 
+## F-statistic: 10.82 on 8 and 454 DF,  p-value: 5.463e-14</code></pre>
+<p>Final model: y = .20(ethnicity) + .177(gender) - .151(language) -
+.005(age) + .005(cls_perc_eval) + .000(cls_students) + .523(cls_credits)
++ .062(bty_avg)</p>
+</div>
+<div id="interpretations" class="section level4">
+<h4>Interpretations</h4>
+<p>Beauty Average: holding all other variables constant, a 1 point
+increase in beauty rating corresponds with a .062 increase in score.</p>
+<p>Ethnicity: holding all other variables constant, minority professors
+see a .204 decrease in evaluation score compared to non-minority
+professors</p>
+</div>
+<div id="the-ideal-professor" class="section level4">
+<h4>The ideal professor</h4>
+<p>A high scoring professor would be a teaching non-minority male
+professor. He would speak English, teach a multiple credit course, and
+have a high average beauty rating.</p>
+<ol start="18" style="list-style-type: decimal">
+<li>I would say no. As it stands, the current model accounts for roughly
+15% of the variance in evaluation scores. Variables I would want to
+factor in are things like the number of years teaching, subject of the
+course material, how long the professor has been teaching that specific
+course, etc. I think these would be variables that greatly impact the
+current model and can provide additional explanation for the variance in
+professor scores.</li>
+</ol>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

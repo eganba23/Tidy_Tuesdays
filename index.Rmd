@@ -1,0 +1,37 @@
+---
+title: "My Labs"
+---
+
+Hello!
+
+This website hosts a collection of labs completed for the [Data Science for Psychologists](https://datascience4psych.github.io/DataScience4Psych/) course. You can find the links to individual labs in the header or down below. Each lab should have has a description of the goal, the product (computer program, hand graph, computer graph, etc.), the data, and some interpretation. I encourage you to explore them.
+
+
+### List of Labs 
+
+#### [Lab 1: Hello R!](lab1.html)
+
+#### [Lab 2: Global plastic waste](lab2.html)
+
+#### [Lab 3: Nobel laureates](lab3.html)
+
+#### [Lab 4: La Quinta is Spanish for next to Denny's, Pt. 1](lab4.html)
+
+#### [Lab 5: La Quinta is Spanish for next to Denny's, Pt. 2](lab5.html)
+
+#### [Lab 6: Ugly charts and Simpson's paradox](lab6.html)
+
+#### [Lab 7: onveying the right message through visualisation](lab7.html)
+
+#### [Lab 8: University of Edinburgh Art Collection](lab8.html)
+
+#### [Lab 9: Algorithmic Bias](lab9.html)
+
+#### [Lab 10: Grading the professor, Pt. 1](lab10.html)
+
+#### [Lab 11: Grading the professor, Pt. 2](lab11.html)
+
+#### [Lab 12: Smoking and Pregnancy](lab12.html)
+
+#### [Lab 13: Colonizing Mars](lab13.html)
+

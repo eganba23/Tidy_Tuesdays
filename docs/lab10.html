@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 10 - Grading the professor, Pt. 1</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 10 - Grading the professor, Pt. 1</h1>
+
+</div>
+
+
+<div id="created-3172025" class="section level4">
+<h4>Created 3/17/2025</h4>
+<p>Here is the link to the assignment page: <a
+href="https://datascience4psych.github.io/DataScience4Psych/lab10.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab10.html</a>.
+This includes the relevant information for the assignment alongside
+required questions I needed to answer.</p>
+<p>Here is a link to an archived version of the assignment: <a
+href="https://web.archive.org/web/20250414135204/https://datascience4psych.github.io/DataScience4Psych/lab10.html"
+class="uri">https://web.archive.org/web/20250414135204/https://datascience4psych.github.io/DataScience4Psych/lab10.html</a></p>
+</div>
+<div id="part-1---exploratory-data-analysis" class="section level1">
+<h1>Part 1 - Exploratory Data Analysis</h1>
+<pre class="r"><code>view(evals)
+
+evals %&gt;%
+  ggplot(aes(
+    x = score
+  ))+
+  geom_histogram(color = &quot;white&quot;)+
+  labs(
+    x = &quot;Score&quot;,
+    y = NULL,
+    title = &quot;Distribution of Scores&quot;,
+    subtitle = &quot;Average professor evaluation score: (1) very unsatisfactory - (5) excellent&quot;
+  )</code></pre>
+<p><img src="lab10_files/figure-html/score%20distribution-1.png" width="672" /></p>
+<pre class="r"><code>skewness(evals$score)</code></pre>
+<pre><code>## [1] -0.6993665</code></pre>
+<pre class="r"><code>median(evals$score)</code></pre>
+<pre><code>## [1] 4.3</code></pre>
+<pre class="r"><code>mean(evals$score)</code></pre>
+<pre><code>## [1] 4.17473</code></pre>
+<p>This distribution appears to be negatively skewed (-.699), with the
+majority of the scores falling above four (median = 4.3, mean =
+4.17)</p>
+<pre class="r"><code>attractive_score &lt;- evals %&gt;%
+  ggplot(aes(
+    x = score,
+    y = bty_avg
+  ))+
+  labs(
+    x = &quot;Score&quot;,
+    y = &quot;Beauty rating&quot;,
+    title = &quot;Relationship between professor rating and attractiveness&quot;,
+    subtitle = &quot;Average professor evaluation score: (1) very unsatisfactory - (5) excellent&quot;
+  )
+
+attractive_score + geom_smooth(se = FALSE, color = &quot;black&quot;, span = 1)</code></pre>
+<p><img src="lab10_files/figure-html/rating%20and%20beauty%20relationship-1.png" width="672" /></p>
+<p>Based on this graph, I would say there is a positive relationship
+between professor ratings and perceived attractiveness.</p>
+<div id="replication-with-geom_jitter" class="section level3">
+<h3>Replication with geom_jitter()</h3>
+<p>I changed the visualization to use geom_point() instead of
+geom_smooth(), which makes using geom_jitter() understandable.</p>
+<pre class="r"><code>attractive_score + geom_point() + geom_smooth(se = FALSE, color = &quot;black&quot;, span = .5)</code></pre>
+<p><img src="lab10_files/figure-html/updated%20rating%20and%20beauty%20relationship-1.png" width="672" /></p>
+<pre class="r"><code>attractive_score + geom_jitter(width = .05) + geom_smooth(se = FALSE, color = &quot;black&quot;, span = .5)</code></pre>
+<p><img src="lab10_files/figure-html/updated%20rating%20and%20beauty%20relationship-2.png" width="672" /></p>
+<p>geom_jitter() can be extremely useful in visualizing the relationship
+between a continuous variable and a discrete variable (i.e. a likert
+scale). The scatterplot utilizing geom_point() can be visually
+misleading, as you cannot tell if data overlap.</p>
+</div>
+<div id="linear-regression-with-a-numerical-predictor"
+class="section level2">
+<h2>Linear Regression with a numerical predictor</h2>
+<pre class="r"><code>m_bty &lt;- lm(score ~ bty_avg, data = evals)
+
+summary(m_bty)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ bty_avg, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.9246 -0.3690  0.1420  0.3977  0.9309 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.88034    0.07614   50.96  &lt; 2e-16 ***
+## bty_avg      0.06664    0.01629    4.09 5.08e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5348 on 461 degrees of freedom
+## Multiple R-squared:  0.03502,    Adjusted R-squared:  0.03293 
+## F-statistic: 16.73 on 1 and 461 DF,  p-value: 5.083e-05</code></pre>
+<pre class="r"><code>attractive_score + 
+  geom_jitter(width = .05, alpha = .6)+ 
+  geom_smooth(se = FALSE, color = &quot;blue&quot;, span = .5)+
+  geom_abline(intercept = 3.88034, slope = 0.06664, color =&quot;orange&quot;, size = 1)</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2
+## 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where
+## this warning was generated.</code></pre>
+<p><img src="lab10_files/figure-html/replot%20with%20regression-1.png" width="672" /></p>
+<p>The regression equation should be y = 3.88 + .067x, where y is score
+and x = average beauty rating.</p>
+<p>This line tells us for every 1 unit increase in beauty rating, there
+is a .067 increase in instructor score. In other words, a change in one
+variable has little impact in the other. The intercept of 3.88 means
+that an instructor with a beauty score of “0” would have an average
+instructor score of 3.88. This means that someone perceived as
+unattractive will still perform above average.</p>
+<p>R squared is .033, an indication of the degree to which individuals
+scores on one variable can predict the scores on the other. In this
+case, average beauty of instructors can only account for about 3% of the
+variance explained by instructor scores. I would summarize this as
+“beauty doesn’t affect evaluation.”</p>
+</div>
+<div id="linear-regression-with-a-categorical-predictor"
+class="section level2">
+<h2>Linear Regression with a categorical predictor</h2>
+<pre class="r"><code>m_gen &lt;- lm(score ~ gender, data = evals)
+
+summary(m_gen)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ gender, data = evals)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.83433 -0.36357  0.06567  0.40718  0.90718 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  4.09282    0.03867 105.852  &lt; 2e-16 ***
+## gendermale   0.14151    0.05082   2.784  0.00558 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5399 on 461 degrees of freedom
+## Multiple R-squared:  0.01654,    Adjusted R-squared:  0.01441 
+## F-statistic: 7.753 on 1 and 461 DF,  p-value: 0.005583</code></pre>
+<p>The regression equation should be y = 4.09 + .142x, where y is score
+and x is gender.</p>
+<pre class="r"><code>gender_score &lt;- evals %&gt;%
+  ggplot(aes(
+    x = score,
+    y = gender
+  ))+
+  labs(
+    x = &quot;Score&quot;,
+    y = &quot;Gender&quot;,
+    title = &quot;Relationship between professor rating and Gender&quot;,
+    subtitle = &quot;Average professor evaluation score: (1) very unsatisfactory - (5) excellent&quot;
+  )
+
+gender_score + geom_point()</code></pre>
+<p><img src="lab10_files/figure-html/graph%20gender%20regression-1.png" width="672" /></p>
+<p>With a quick graph using gender as the y variable, it looks like
+female is being coded as less than a male, indicating that an increase
+in X is associated with going from female to male. yfemale = 4.09, ymale
+= 5.51</p>
+<pre class="r"><code>m_rank &lt;- lm(score ~ rank, data = evals)
+
+m_rank</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ rank, data = evals)
+## 
+## Coefficients:
+##      (Intercept)  ranktenure track       ranktenured  
+##           4.2843           -0.1297           -0.1452</code></pre>
+<pre class="r"><code>summary(m_rank)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ rank, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.8546 -0.3391  0.1157  0.4305  0.8609 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       4.28431    0.05365  79.853   &lt;2e-16 ***
+## ranktenure track -0.12968    0.07482  -1.733   0.0837 .  
+## ranktenured      -0.14518    0.06355  -2.284   0.0228 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5419 on 460 degrees of freedom
+## Multiple R-squared:  0.01163,    Adjusted R-squared:  0.007332 
+## F-statistic: 2.706 on 2 and 460 DF,  p-value: 0.06786</code></pre>
+<p>Regression equations: y = 4.28 - .130x, where y is score and x is
+signifying either teaching or tenure track. y = 4.28 - .145x, where y is
+score and x is signifying either teaching or tenure.</p>
+<pre class="r"><code>evals$rank_relevel &lt;- relevel(evals$rank, ref = &quot;tenure track&quot;)
+
+m_rank_relevel &lt;- lm(score ~ rank_relevel, data = evals)
+
+m_rank_relevel</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ rank_relevel, data = evals)
+## 
+## Coefficients:
+##          (Intercept)  rank_relevelteaching   rank_releveltenured  
+##               4.1546                0.1297               -0.0155</code></pre>
+<pre class="r"><code>summary(m_rank_relevel)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ rank_relevel, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.8546 -0.3391  0.1157  0.4305  0.8609 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)           4.15463    0.05214  79.680   &lt;2e-16 ***
+## rank_relevelteaching  0.12968    0.07482   1.733   0.0837 .  
+## rank_releveltenured  -0.01550    0.06228  -0.249   0.8036    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5419 on 460 degrees of freedom
+## Multiple R-squared:  0.01163,    Adjusted R-squared:  0.007332 
+## F-statistic: 2.706 on 2 and 460 DF,  p-value: 0.06786</code></pre>
+<p>Regression equations: y = 4.155 + .130x, where y is score and x is
+signifying either tenure track or teaching y = 4.155 - .016x, where y is
+score and x is signifying either tenure track or tenured</p>
+<p>R squared is .007, an indication of the degree to which individuals
+scores on one variable can predict the scores on the other. In this
+case, rank of instructors can only account for about .7% of the variance
+explained by instructor scores. I would summarize this as “rank doesn’t
+affect evaluation.”</p>
+<pre class="r"><code>evals &lt;- evals %&gt;%
+  mutate(tenure_eligible = case_when(
+    rank %in% c(&quot;tenure track&quot;, &quot;tenured&quot;) ~ &quot;yes&quot;,
+    rank == &quot;teaching&quot; ~ &quot;no&quot;
+  ))
+
+m_tenure_eligible &lt;- lm(score ~ tenure_eligible, data = evals)
+
+m_tenure_eligible</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ tenure_eligible, data = evals)
+## 
+## Coefficients:
+##        (Intercept)  tenure_eligibleyes  
+##             4.2843             -0.1405</code></pre>
+<pre class="r"><code>summary(m_tenure_eligible)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ tenure_eligible, data = evals)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.8438 -0.3438  0.1157  0.4360  0.8562 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          4.2843     0.0536  79.934   &lt;2e-16 ***
+## tenure_eligibleyes  -0.1406     0.0607  -2.315    0.021 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5413 on 461 degrees of freedom
+## Multiple R-squared:  0.0115, Adjusted R-squared:  0.009352 
+## F-statistic: 5.361 on 1 and 461 DF,  p-value: 0.02103</code></pre>
+<p>The regression equation should be y = 4.28 - .141x, where y is score
+and x is tenure eligibility. This tells us the change from non-tenure
+track to tenure track equates for a .141 decrease in instructor score.
+The R squared value is .009. This means that tenure eligibility
+essentially does not explain variation in professor ratings.</p>
+<p>picture google to find cool stuff (digital cv, etc.) create website
+includes all my work</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

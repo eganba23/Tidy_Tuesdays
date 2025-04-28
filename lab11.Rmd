@@ -1,0 +1,147 @@
+---
+title: "Lab 11 - Grading the professor, Pt. 2"
+output: html_document
+---
+
+#### Created 3/25/2025
+
+This is the link to the assignment page (https://datascience4psych.github.io/DataScience4Psych/lab11.html). This includes the relevant information for the assignment alongside required questions I needed to answer.
+
+This is an archived version of the assignment page: https://web.archive.org/web/20250414140905/https://datascience4psych.github.io/DataScience4Psych/lab11.html#set-a-seed
+
+```{r load-packages, message=FALSE, warning = FALSE, echo = FALSE}
+library(tidyverse) 
+library(tidymodels)
+library(openintro)
+```
+
+## Simple Linear Regression
+
+
+```{r simple regression}
+view(evals)
+
+m_bty <- lm(score ~ bty_avg, data = evals)
+
+summary(m_bty)
+
+```
+
+Linear Model: y = 3.88 + .067x <br/>
+R-squared: .035 <br/>
+Adjusted R-squared: .033
+
+## Multiple Linear Regression
+
+```{r Q2}
+
+m_bty_gen <- lm(score ~ bty_avg + gender, data = evals)
+
+summary(m_bty_gen)
+
+```
+
+Linear model: y = 3.747 + .074(bty_avg) + .172(gender) <br/>
+R-squared: .059 <br/>
+Adjusted R-squared: .055 <br/>
+
+#### Interpretation
+
+intercept: A female with an average beauty rating of zero will get an evaluation of 3.7
+
+bty_avg slope: For people of the same gender, increasing their average beauty rating by one will only increase their evaluation score by .07
+
+gender slope: A male will have .172 higher eval score than a female with the same average beauty rating.
+
+#### Questions 4-9
+
+4. This model (m_bty_gen) accounts for 5.5% of the variance in score
+
+5. For males: y = 3.747 + .074(bty_avg) + .172
+
+6. Males will tend to have the higher beauty rating compared to females
+
+7. Males have a slightly higher evaluation score (.172) than females for the same beauty rating.
+
+8. m_bty r-squared of .033 versus m_bty_gen r-squared of .055. Adding gender to the model only accounts for an additional 2.2% of the variance of score. I would say adding it made little difference in explaining evaluation scores.
+
+9. .067 bty_avg slope for the original model. .074 bty_avg slope for the model with gender. Adding gender meant that beauty rating of professor had a slightly increased  "weight" for predicting score.
+
+### Replacing gender with rank
+
+```{r add in rank to original}
+
+m_bty_rank <- lm(score ~ bty_avg + rank, data = evals)
+
+summary(m_bty_rank)
+
+```
+
+Linear model: y = 3.982 + .068(bty_avg) - .161(tenure track) <br/>
+Linear model: y = 3.982 + .068(bty_avg) - .126(tenured)
+
+R-squared: .047 <br/>
+Adjusted R-squared: .040
+
+#### Interpretation
+
+intercept: A teaching professor with an average beauty rating of zero will get an evaluation of 3.98
+
+bty_avg slope: For people of the same rank, increasing their average beauty rating by one will only increase their evaluation score by .068
+
+tenure track slope: A tenure track professor will have a .161 lower eval score than a teaching professor with the same average beauty rating.
+
+tenured slope: A tenured professor will have a .126 lower eval score than a teaching professor with the same average beauty rating.
+
+
+## Finding the best model
+
+Going forward, I will only consider the following variables as potential predictors: rank, ethnicity, gender, language, age, cls_perc_eval, cls_did_eval, cls_students, cls_level, cls_profs, cls_credits, bty_avg.
+
+11. Based on the predictors above, I would guess ethnicity would be the worst predictors.
+
+``` {r worst predictor}
+
+worst_pred <- lm(score ~ ethnicity, data = evals)
+
+summary(worst_pred)
+
+```
+
+The Adjusted R-squared value is .0035, meaning that ethnicity accounts for around .35% of the variance in score
+
+13. Since I'm already including the percent of students completing the eval and the total number of students, I think it wouldn't make sense to include cls_did_eval (number of students who completed the eval). The information is already conveyed by the other two variables, and this addition would be redundant.
+
+#### Figuring out best model
+
+```{r all predictors}
+
+evals$ethnicity_relevel <- relevel(evals$ethnicity, ref = "not minority")
+
+all_pred <- lm(score ~ rank + ethnicity + gender + language + age + cls_perc_eval + cls_students + cls_level + cls_profs + cls_credits + bty_avg, data = evals)
+
+summary(all_pred)
+
+```
+
+```{r best model}
+
+evals$ethnicity_relevel <- relevel(evals$ethnicity, ref = "not minority")
+
+best_model <- lm(score ~  ethnicity_relevel + gender + language + age + cls_perc_eval + cls_students + cls_credits + bty_avg, data = evals)
+
+summary(best_model)
+
+```
+
+Final model: y = .20(ethnicity) + .177(gender) - .151(language) - .005(age) + .005(cls_perc_eval) + .000(cls_students) + .523(cls_credits) + .062(bty_avg)
+
+#### Interpretations
+Beauty Average: holding all other variables constant, a 1 point increase in beauty rating corresponds with a .062 increase in score.
+
+Ethnicity: holding all other variables constant, minority professors see a .204 decrease in evaluation score compared to non-minority professors 
+
+#### The ideal professor
+A high scoring professor would be a teaching non-minority male professor. He would speak English, teach a multiple credit course, and have a high average beauty rating.
+
+18. I would say no. As it stands, the current model accounts for roughly 15% of the variance in evaluation scores. Variables I would want to factor in are things like the number of years teaching, subject of the course material, how long the professor has been teaching that specific course, etc. I think these would be variables that greatly impact the current model and can provide additional explanation for the variance in professor scores.

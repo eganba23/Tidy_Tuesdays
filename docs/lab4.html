@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 04 - La Quinta is Spanish for next to Denny’s, Pt. 1</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 04 - La Quinta is Spanish for next to
+Denny’s, Pt. 1</h1>
+
+</div>
+
+
+<div id="created-252025" class="section level4">
+<h4>Created 2/5/2025</h4>
+<p>Link to assignment: <a
+href="https://datascience4psych.github.io/DataScience4Psych/lab04.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab04.html</a></p>
+<p>Link to archived assignment: <a
+href="https://web.archive.org/web/20250414135305/https://datascience4psych.github.io/DataScience4Psych/lab04.html#getting-started-3"
+class="uri">https://web.archive.org/web/20250414135305/https://datascience4psych.github.io/DataScience4Psych/lab04.html#getting-started-3</a></p>
+</div>
+<div id="exercise-1---look-at-dennys-dataset" class="section level3">
+<h3>Exercise 1 - Look at Denny’s dataset</h3>
+<pre class="r"><code>dennys %&gt;%
+  nrow()</code></pre>
+<pre><code>## [1] 1643</code></pre>
+<pre class="r"><code>dennys %&gt;%
+ncol()</code></pre>
+<pre><code>## [1] 6</code></pre>
+<p>There are 1,643 rows and 6 columns in the Denny’s dataset</p>
+</div>
+<div id="exercise-2---look-at-la-quinta-dataset" class="section level3">
+<h3>Exercise 2 - Look at La Quinta dataset</h3>
+<pre class="r"><code>laquinta %&gt;%
+  nrow()</code></pre>
+<pre><code>## [1] 909</code></pre>
+<pre class="r"><code>laquinta %&gt;%
+ncol()</code></pre>
+<pre><code>## [1] 6</code></pre>
+<p>There are 909 rows and 6 columns in the La Quinta dataset</p>
+</div>
+<div id="exercise-3---international-locations" class="section level3">
+<h3>Exercise 3 - International locations?</h3>
+<p>Based on the website, Denny’s is only based in the United States (if
+I google it, apparently there are a handful of Denny’s located in
+Canada, Mexico, etc.). For La Quinta, there are several hotels in China,
+New Zealand, Turkey, the United Arab Emirates, Chile, Colombia, and
+Ecquador.</p>
+<p>…</p>
+</div>
+<div id="exercise-4---dataset-observations" class="section level3">
+<h3>Exercise 4 - Dataset observations</h3>
+<pre class="r"><code>view(dennys)
+view(laquinta)</code></pre>
+<p>Looking at the dataset, there is a column for states, latitude,
+longitude. One way we could do this is by filtering out state
+abbreviations. This should leave us with only international data.
+Another way to do this is create a filter that filters out rows based on
+their latitude and longitude. Any observations that match latitude and
+longitude in the United states would be filtered out.</p>
+<p>…</p>
+</div>
+<div id="exercise-5---examine-dennys-dataset" class="section level3">
+<h3>Exercise 5 - Examine Denny’s dataset</h3>
+<pre class="r"><code>dennys %&gt;%
+  filter(!(state %in% states$abbreviation))</code></pre>
+<pre><code>## # A tibble: 0 × 6
+## # ℹ 6 variables: address &lt;chr&gt;, city &lt;chr&gt;, state &lt;chr&gt;, zip &lt;chr&gt;,
+## #   longitude &lt;dbl&gt;, latitude &lt;dbl&gt;</code></pre>
+<p>There are no Denny’s outside the United States in the dataset.</p>
+<p>…</p>
+</div>
+<div id="exercise-6---creating-a-usa-variable-for-dennys"
+class="section level3">
+<h3>Exercise 6 - Creating a USA variable for Denny’s</h3>
+<pre class="r"><code>dn &lt;- dennys %&gt;%
+  mutate(country = &quot;United States&quot;)
+#view(dn)</code></pre>
+<p>…</p>
+</div>
+<div id="exercise-7---examine-la-quinta-dataset" class="section level3">
+<h3>Exercise 7 - Examine La Quinta dataset</h3>
+<pre class="r"><code>laquinta %&gt;%
+  filter(!(state %in% states$abbreviation))</code></pre>
+<pre><code>## # A tibble: 14 × 6
+##    address                                  city  state zip   longitude latitude
+##    &lt;chr&gt;                                    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Carretera Panamericana Sur KM 12         &quot;\nA… AG    20345    -102.     21.8 
+##  2 Av. Tulum Mza. 14 S.M. 4 Lote 2          &quot;\nC… QR    77500     -86.8    21.2 
+##  3 Ejercito Nacional 8211                   &quot;Col… CH    32528    -106.     31.7 
+##  4 Blvd. Aeropuerto 4001                    &quot;Par… NL    66600    -100.     25.8 
+##  5 Carrera 38 # 26-13 Avenida las Palmas c… &quot;\nM… ANT   0500…     -75.6     6.22
+##  6 AV. PINO SUAREZ No. 1001                 &quot;Col… NL    64000    -100.     25.7 
+##  7 Av. Fidel Velazquez #3000 Col. Central   &quot;\nM… NL    64190    -100.     25.7 
+##  8 63 King Street East                      &quot;\nO… ON    L1H1…     -78.9    43.9 
+##  9 Calle Las Torres-1 Colonia Reforma       &quot;\nP… VE    93210     -97.4    20.6 
+## 10 Blvd. Audi N. 3 Ciudad Modelo            &quot;\nS… PU    75010     -97.8    19.2 
+## 11 Ave. Zeta del Cochero No 407             &quot;Col… PU    72810     -98.2    19.0 
+## 12 Av. Benito Juarez 1230 B (Carretera 57)… &quot;\nS… SL    78399    -101.     22.1 
+## 13 Blvd. Fuerza Armadas                     &quot;con… FM    11101     -87.2    14.1 
+## 14 8640 Alexandra Rd                        &quot;\nR… BC    V6X1…    -123.     49.2</code></pre>
+<p>Places and state tags for international hotels: Mexico (AG) Mexico
+(QR) Mexico (CH) Mexico (NL) Colombia (ANT) Mexico (NL) Mexico (NL)
+Canada (ON) Mexico (VE) Mexico (PU) Mexico (PU) Mexico (SL) Honduras
+(FM) Canada (BC)</p>
+<p>…</p>
+</div>
+<div id="exercise-8---creating-a-country-variable-for-la-quinta"
+class="section level3">
+<h3>Exercise 8 - Creating a Country variable for La Quinta</h3>
+<pre class="r"><code>lq_USA &lt;- laquinta %&gt;%
+  mutate(country = case_when(
+    state %in% state.abb ~ &quot;United States&quot;,
+    state %in% c(&quot;ON&quot;, &quot;BC&quot;) ~ &quot;Canada&quot;,
+    state == &quot;ANT&quot; ~ &quot;Colombia&quot;,
+    state %in% c(&quot;AG&quot;, &quot;QR&quot;, &quot;CH&quot;, &quot;NL&quot;, &quot;VE&quot;,&quot;PU&quot;,&quot;SL&quot;) ~ &quot;Mexico&quot;,
+    state == &quot;FM&quot; ~ &quot;Honduras&quot;
+  ))
+
+#view(lq)
+
+lq &lt;- lq_USA %&gt;%
+  filter(country == &quot;United States&quot;)</code></pre>
+<p>…</p>
+</div>
+<div id="exercise-9---breakdown-by-state" class="section level3">
+<h3>Exercise 9 - Breakdown by state</h3>
+<pre class="r"><code>dn %&gt;%
+  count(state, sort = TRUE) %&gt;%
+  inner_join(states, by = c(&quot;state&quot; = &quot;abbreviation&quot;))</code></pre>
+<pre><code>## # A tibble: 51 × 4
+##    state     n name            area
+##    &lt;chr&gt; &lt;int&gt; &lt;chr&gt;          &lt;dbl&gt;
+##  1 CA      403 California   163695.
+##  2 TX      200 Texas        268596.
+##  3 FL      140 Florida       65758.
+##  4 AZ       83 Arizona      113990.
+##  5 IL       56 Illinois      57914.
+##  6 NY       56 New York      54555.
+##  7 WA       49 Washington    71298.
+##  8 OH       44 Ohio          44826.
+##  9 MO       42 Missouri      69707.
+## 10 PA       40 Pennsylvania  46054.
+## # ℹ 41 more rows</code></pre>
+<pre class="r"><code>lq %&gt;%
+  count(state, sort = TRUE) %&gt;%
+  inner_join(states, by = c(&quot;state&quot; = &quot;abbreviation&quot;))</code></pre>
+<pre><code>## # A tibble: 48 × 4
+##    state     n name          area
+##    &lt;chr&gt; &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+##  1 TX      237 Texas      268596.
+##  2 FL       74 Florida     65758.
+##  3 CA       56 California 163695.
+##  4 GA       41 Georgia     59425.
+##  5 TN       30 Tennessee   42144.
+##  6 OK       29 Oklahoma    69899.
+##  7 LA       28 Louisiana   52378.
+##  8 CO       27 Colorado   104094.
+##  9 NM       19 New Mexico 121590.
+## 10 NY       19 New York    54555.
+## # ℹ 38 more rows</code></pre>
+<p>Denny’s: California has the most locations with 403</p>
+<p>La Quinta: Texas has the most locations with 237</p>
+<p>Honestly I didn’t know what to expect. I am surprised at the drop off
+(for example, the 5th most state with La Quintas is Tennessee with
+30).</p>
+<p>…</p>
+</div>
+<div id="exercise-10---combine-and-graph" class="section level3">
+<h3>Exercise 10 - Combine and graph</h3>
+<pre class="r"><code>dn &lt;- dn %&gt;%
+  mutate(establishment = &quot;Denny&#39;s&quot;)
+lq &lt;- lq %&gt;%
+  mutate(establishment = &quot;La Quinta&quot;)
+
+dn_lq &lt;- bind_rows(dn, lq)
+
+ggplot(dn_lq, mapping = aes(
+  x = longitude,
+  y = latitude,
+  color = establishment
+)) +
+  geom_point()</code></pre>
+<p><img src="lab4_files/figure-html/combination%20Taco%20bell%20and%20Pizza%20Hut-1.png" width="672" /></p>
+<p>…</p>
+</div>
+<div id="exercise-11---examining-and-visualizing-north-carolina-data"
+class="section level3">
+<h3>Exercise 11 - Examining and Visualizing North Carolina data</h3>
+<pre class="r"><code>NC_data &lt;- dn_lq %&gt;%
+  filter(state == &quot;NC&quot;)
+
+NC_data %&gt;%
+  ggplot( mapping = aes(
+    x = longitude,
+    y = latitude,
+    color = establishment
+)) +
+    geom_point(alpha = .5) +
+  scale_color_manual(values=c(&#39;Blue&#39;,&#39;Red&#39;))+
+  labs(
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;,
+    title = &quot;Distribution of Denny&#39;s and La Quinta in North Carolina&quot; 
+  )</code></pre>
+<p><img src="lab4_files/figure-html/filter%20for%20NC-1.png" width="672" /></p>
+<p>Visually, Mitch’s joke does not appear to hold. There are a handful
+of locations where they are next to each other, but there are a handful
+of La Quintas that are not next to Denny’s.</p>
+<p>…</p>
+</div>
+<div id="exercise-12---examining-and-visualizing-texas-data"
+class="section level3">
+<h3>Exercise 12 - Examining and Visualizing Texas data</h3>
+<pre class="r"><code>TX_data &lt;- dn_lq %&gt;%
+  filter(state == &quot;TX&quot;)
+
+TX_data %&gt;%
+  ggplot( mapping = aes(
+    x = longitude,
+    y = latitude,
+    color = establishment
+)) +
+    geom_point(alpha = .3) +
+  scale_color_manual(values=c(&#39;Blue&#39;,&#39;Red&#39;))+
+  labs(
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;,
+    title = &quot;Distribution of Denny&#39;s and La Quinta in Texas&quot; 
+  )</code></pre>
+<p><img src="lab4_files/figure-html/filter%20for%20Texas-1.png" width="672" /></p>
+<p>It looks like the joke holds up more in Texas than it does in North
+Carolina. There are a lot of overlapping Denny’s and La Quintas.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

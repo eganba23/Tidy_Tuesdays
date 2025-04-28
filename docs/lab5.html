@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 05 - La Quinta is Spanish for next to Denny’s, Pt. 2</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+<li>
+  <a href="lab6.html">Lab 6</a>
+</li>
+<li>
+  <a href="lab7.html">Lab 7</a>
+</li>
+<li>
+  <a href="lab8.html">Lab 8</a>
+</li>
+<li>
+  <a href="lab9.html">Lab 9</a>
+</li>
+<li>
+  <a href="lab10.html">Lab 10</a>
+</li>
+<li>
+  <a href="lab11.html">Lab 11</a>
+</li>
+<li>
+  <a href="lab12.html">Lab 12</a>
+</li>
+<li>
+  <a href="lab13.html">Lab 13</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 05 - La Quinta is Spanish for next to
+Denny’s, Pt. 2</h1>
+
+</div>
+
+
+<div id="created-2122025" class="section level4">
+<h4>Created 2/12/2025</h4>
+<p>Here is the link to the assignment page: <a
+href="https://datascience4psych.github.io/DataScience4Psych/lab05.html"
+class="uri">https://datascience4psych.github.io/DataScience4Psych/lab05.html</a>.
+This includes the relevant information for the assignment alongside
+required questions I needed to answer.</p>
+<p>Here is the link to the assignment at the time it was created: <a
+href="https://web.archive.org/web/20250414135339/https://datascience4psych.github.io/DataScience4Psych/lab05.html#yaml-2"
+class="uri">https://web.archive.org/web/20250414135339/https://datascience4psych.github.io/DataScience4Psych/lab05.html#yaml-2</a></p>
+</div>
+<div id="exercise-1" class="section level3">
+<h3>Exercise 1</h3>
+<pre class="r"><code>dn_ak &lt;- dennys %&gt;%
+  filter(state == &quot;AK&quot;)
+nrow(dn_ak)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>lq_ak &lt;- laquinta %&gt;%
+  filter(state == &quot;AK&quot;)
+nrow(lq_ak)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>There are 3 Denny’s and 2 La Quintas in Alaska.</p>
+</div>
+<div id="exercise-2" class="section level3">
+<h3>Exercise 2</h3>
+<pre class="r"><code>nrow(lq_ak) *nrow(dn_ak)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<p>Since there are 3 Denny’s and 2 La Quintas in Alaska, we need 6 total
+distances. We can combine the two data frames to aid in the
+calcuations.</p>
+<pre class="r"><code>dn_lq_ak &lt;- full_join(dn_ak, lq_ak, 
+                      by = &quot;state&quot;)
+view(dn_lq_ak)</code></pre>
+<p>Once we combine the data frames, the dn_lq_ak data frame contains 6
+rows, one row per combination. Each variable has an .x or .y designation
+to differentiate between if it is for a Denny’s or a La Quinta. We can
+use mutate() to add a variable for distance.</p>
+</div>
+<div id="exercise-3" class="section level3">
+<h3>Exercise 3</h3>
+<pre class="r"><code>dn_lq_ak &lt;- 
+  dn_lq_ak %&gt;%
+  mutate(
+    distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y, 2)
+  )
+
+view(dn_lq_ak)</code></pre>
+</div>
+<div id="exercise-4" class="section level3">
+<h3>Exercise 4</h3>
+<pre class="r"><code>dn_lq_ak_mindist &lt;- dn_lq_ak %&gt;%
+  group_by(address.x) %&gt;%
+  summarize(closest = min(distance))
+
+dn_lq_ak_mindist &lt;- dn_lq_ak_mindist %&gt;%
+  rename(address = address.x)
+
+view(dn_lq_ak_mindist)</code></pre>
+</div>
+<div id="graphing-the-distance" class="section level2">
+<h2>Graphing The Distance</h2>
+<div id="alaska" class="section level3">
+<h3>Alaska</h3>
+<pre class="r"><code>dn_lq_ak_mindist %&gt;%
+  ggplot(mapping = aes(
+    x = fct_reorder(address, closest),
+   y = closest
+  )) +
+  theme_bw()+
+    geom_col(fill = &quot;#6a4e93&quot;) +
+  labs(
+    title = &quot;Minimum distance from a Denny&#39;s to a La Quinta in Alaska&quot;,
+    x = &quot;Address of a Denny&#39;s&quot;,
+    y = &quot;Distance to a La Quinta in km&quot;
+  )</code></pre>
+<p><img src="lab5_files/figure-html/comparison%20for%20Alaska-1.png" width="672" /></p>
+<pre class="r"><code>mean(dn_lq_ak_mindist$closest)</code></pre>
+<pre><code>## [1] 4.41</code></pre>
+<p>This graph shows us that the closest La Quinta to a Denny’s is only
+about 2 km away. The farthest La Quinta is only about 6 km away. I also
+calculated the average distance of a Denny’s to a La Quinta to be 4.41
+km.</p>
+</div>
+<div id="north-carolina" class="section level3">
+<h3>North Carolina</h3>
+<pre class="r"><code>title_nc &lt;- &quot;Minimum distance from a Denny&#39;s to a La Quinta in North Carolina&quot;
+
+dn_lq_nc_mindist %&gt;%
+  ggplot(mapping = aes(
+    x = fct_rev(fct_reorder(address, closest)),
+   y = closest
+  )) +
+  theme_bw()+
+  coord_flip()+
+  geom_text(aes(x = address, 
+              y = closest, 
+              label = closest),
+          size = 3.7, color = &quot;black&quot;) +
+    geom_col(alpha = .4, fill = &quot;#6a4e93&quot;) +
+  labs(
+    x = &quot;Address of a Denny&#39;s&quot;,
+    y = &quot;Distance to a La Quinta in km&quot;
+  )+
+  ggtitle(title_nc)+
+  theme(plot.title = element_text(size=12.5))</code></pre>
+<p><img src="lab5_files/figure-html/comparison%20for%20North%20Carolina-1.png" width="672" /></p>
+<pre class="r"><code>mean(dn_lq_nc_mindist$closest)</code></pre>
+<pre><code>## [1] 65.44286</code></pre>
+<p>This graph shows us that the same trend does not hold in North
+Carolina. The average distance from a Denny’s to a La Quinta is 65.44
+km, with only four locations under 10 km.</p>
+</div>
+<div id="texas" class="section level3">
+<h3>Texas</h3>
+<pre class="r"><code>title_tx &lt;- &quot;Minimum distance from a Denny&#39;s to a La Quinta in Texas&quot;
+dn_lq_tx_mindist %&gt;%
+  ggplot(mapping = aes(
+   x = closest
+  )) +
+  theme_bw()+
+    geom_histogram(binwidth = 1,fill = &quot;#6a4e93&quot;, alpha = .6, color = &quot;black&quot;) +
+  labs(
+    x = &quot;Distance to a La Quinta in km&quot;,
+    y = NULL
+  )+
+  ggtitle(title_tx)+
+  theme(plot.title = element_text(size=14))</code></pre>
+<p><img src="lab5_files/figure-html/comparison%20for%20Texas-1.png" width="672" /></p>
+<pre class="r"><code>mean(dn_lq_tx_mindist$closest)</code></pre>
+<pre><code>## [1] 5.79215</code></pre>
+<pre class="r"><code>sd(dn_lq_tx_mindist$closest)</code></pre>
+<pre><code>## [1] 8.830473</code></pre>
+<pre class="r"><code>dn_lq_tx_mindist%&gt;%
+count(close)</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   close           n
+##   &lt;chr&gt;       &lt;int&gt;
+## 1 Less than 5   126
+## 2 More than 5    74</code></pre>
+<p>The average distance from a Denny’s to a La Quinta is around 5.7 km,
+with the standard deviation being 8.83 km. By creating a variable that
+distinguishes distance, we can see that 126 La Quinta’s are less than 5
+km away from a Denny’s, while 74 of them are over 5 km away.</p>
+</div>
+<div id="georgia" class="section level3">
+<h3>Georgia</h3>
+<p>Since I am from Atlanta, I decided to pick Georgia.</p>
+<pre class="r"><code>title_ga &lt;- &quot;Minimum distance from a Denny&#39;s to a La Quinta in Georgia&quot;
+
+dn_lq_ga_mindist %&gt;%
+  ggplot(mapping = aes(
+    x = fct_rev(fct_reorder(address, closest)),
+   y = closest
+  )) +
+  theme_bw()+
+  coord_flip()+
+  geom_text(aes(x = address, 
+              y = closest, 
+              label = closest),
+          size = 3.7, color = &quot;black&quot;) +
+    geom_col(alpha = .4, fill = &quot;#6a4e93&quot;) +
+  labs(
+    x = &quot;Address of a Denny&#39;s&quot;,
+    y = &quot;Distance to a La Quinta in km&quot;
+  )+
+  ggtitle(title_ga)+
+  theme(plot.title = element_text(size=12.5))</code></pre>
+<p><img src="lab5_files/figure-html/comparison%20for%20Georgia-1.png" width="672" /></p>
+<pre class="r"><code>mean(dn_lq_ga_mindist$closest)</code></pre>
+<pre><code>## [1] 14.045</code></pre>
+<pre class="r"><code>sd(dn_lq_ga_mindist$closest)</code></pre>
+<pre><code>## [1] 20.62042</code></pre>
+<p>In Georgia, mean is 14.05 km and the standard deviation is 20.62 km.
+You can see that the majority of Denny’s have a La Quinta less than 20
+km away.</p>
+</div>
+<div id="final-question" class="section level3">
+<h3>Final Question</h3>
+<p>I’m guessing this holds up the best in Texas. I didn’t look at other
+states with high numbers of Denny’s/La Quintas (i.e. California), but
+Texas has a ton of low distances based on the datasets.</p>
+</div>
+</div>
+<div id="visual-by-geographic-location" class="section level2">
+<h2>Visual by geographic location</h2>
+<p>Although the assignment didn’t ask for it, I also decided to graph
+these relationships geographically. I used longitude and latitude from
+the previous assignment along with the relevant information in this one.
+There are issues related to my calculation of the closest distances. I
+grouped by Denny’s addresses only (address.x), but the map includes both
+Denny’s and La Quinta locations. I also have the max.overlaps set to the
+default within geom_text_repel(). These two issues create problems
+related to my graphs not including all distances being represented. I
+included what would happen if these issues were fixed.</p>
+<div class="float">
+<img src="Messy_plot.png" alt="The plot has now become unreadable" />
+<div class="figcaption">The plot has now become unreadable</div>
+</div>
+<p>Based on this becoming unreadable, I have left the cleaner plots to
+represent my capabilities as a coder early on in my learning.</p>
+<div id="alaska-1" class="section level3">
+<h3>Alaska</h3>
+<pre class="r"><code>AK_dataset %&gt;%
+  ggplot( mapping = aes(
+    x = longitude,
+    y = latitude,
+    color = establishment
+  )) +
+  theme_bw()+
+    geom_point() +
+ scale_color_manual(values=c(&#39;Blue&#39;,&#39;Red&#39;))+
+geom_text_repel(aes(x = longitude, 
+              y = latitude, 
+              label = closest),
+          size = 3, color = &quot;black&quot;) +
+  labs(
+    title = &quot;Minimum distance from a Denny&#39;s to a La Quinta in Alaska&quot;,
+    x = &quot;longitude&quot;,
+    y = &quot;latitude&quot;
+  )</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values or values outside
+## the scale range (`geom_text_repel()`).</code></pre>
+<p><img src="lab5_files/figure-html/geographic%20for%20Alaska-1.png" width="672" /></p>
+<p>This map is a geographical representation of the distance between
+Denny’s and La Quinta. You can tell that they are tightly clustered
+together, indicating Denny’s are always close to La Quintas.</p>
+</div>
+<div id="north-carolina-1" class="section level3">
+<h3>North Carolina</h3>
+<pre class="r"><code>NC_dataset %&gt;%
+  ggplot( mapping = aes(
+    x = longitude,
+    y = latitude,
+    color = establishment
+  )) +
+  theme_bw()+
+    geom_point(alpha = .6) +
+ scale_color_manual(values=c(&#39;Blue&#39;,&#39;Red&#39;))+
+geom_text_repel(aes(x = longitude, 
+              y = latitude, 
+              label = closest),
+          size = 3, color = &quot;black&quot;) +
+  labs(
+    title = &quot;Minimum distance from a Denny&#39;s to a La Quinta in North Carolina&quot;,
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;
+  )</code></pre>
+<p><img src="lab5_files/figure-html/geographic%20for%20North%20Carolina-1.png" width="672" /></p>
+<p>This graph is more messy and less helpful than the Alaska map. The
+increase in locations make it harder to understand which La Quinta each
+Denny’s is going to, but it does have advantages. One primary advantage
+is understanding why there are a bunch of triple digit distances. You
+can see that the bottom right corner of the state has several Denny’s
+without a La Quinta.</p>
+</div>
+<div id="texas-1" class="section level3">
+<h3>Texas</h3>
+<pre class="r"><code>TX_dataset %&gt;%
+  ggplot( mapping = aes(
+    x = longitude,
+    y = latitude,
+    color = establishment
+  )) +
+  theme_bw()+
+    geom_point(alpha = .6) +
+ scale_color_manual(values=c(&#39;Blue&#39;,&#39;Red&#39;))+
+geom_text_repel(aes(x = longitude, 
+              y = latitude, 
+              label = closest),
+          size = 3, color = &quot;black&quot;) +
+  labs(
+    title = &quot;Minimum distance from a Denny&#39;s to a La Quinta in Texas&quot;,
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;
+  )</code></pre>
+<p><img src="lab5_files/figure-html/geographic%20for%20Texas-1.png" width="672" /></p>
+<p>This is a very messy plot and something I would absolutely not use. I
+am concerned about the datapoints on the far left of the graph not
+showing distances.</p>
+</div>
+<div id="georgia-1" class="section level3">
+<h3>Georgia</h3>
+<pre class="r"><code>GA_dataset %&gt;%
+  ggplot( mapping = aes(
+    x = longitude,
+    y = latitude,
+    color = establishment
+  )) +
+  theme_bw()+
+    geom_point(alpha = .6) +
+ scale_color_manual(values=c(&#39;Blue&#39;,&#39;Red&#39;))+
+geom_text_repel(aes(x = longitude, 
+              y = latitude, 
+              label = closest),
+          size = 3, color = &quot;black&quot;) +
+  labs(
+    title = &quot;Minimum distance from a Denny&#39;s to a La Quinta in Georgia&quot;,
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;
+  )</code></pre>
+<p><img src="lab5_files/figure-html/geographic%20for%20Georgia-1.png" width="672" /></p>
+<p>I’ll admit this looks nothing like Georgia, and some of the data
+points written don’t appear to be as far as they seem. But it’s a cool
+visual.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
