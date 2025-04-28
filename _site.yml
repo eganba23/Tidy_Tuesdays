@@ -7,10 +7,10 @@ navbar:
       href: index.html
     - text: "About Me"
       href: about.html
-    - text: "Date 1"
-      href: lab1.html
-    - text: "Lab 2"
-      href: lab2.html
+    - text: "July 30th, 2025"
+      href: 7-30-24.html
+    - text: "April 20th, 2024"
+      href: 4-20-25.html
 
 
 output:

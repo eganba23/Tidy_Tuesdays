@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Holiday Fatal Car Crashes</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Tidy Tuesdays</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="7-30-24.html">July 30th, 2025</a>
+</li>
+<li>
+  <a href="4-20-25.html">April 20th, 2024</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Holiday Fatal Car Crashes</h1>
+
+</div>
+
+
+<div id="created-4212025" class="section level4">
+<h4>Created 4/21/2025</h4>
+</div>
+<div id="tidy-tuesday---4202025" class="section level1">
+<h1>Tidy Tuesday - 4/20/2025</h1>
+<p>The Tidy Tuesday for this week explored fatal crashes on 4/20, the
+“marijuana holiday.” Through the data I’m going to attempt to show that
+there is actually no link between crashes and inhibition due to
+marijuana. This should be similar to lab 7’s visualization of bad data
+lab.</p>
+<pre class="r"><code>tuesdata &lt;- tidytuesdayR::tt_load(2025, week = 16)</code></pre>
+<pre><code>## ---- Compiling #TidyTuesday Information for 2025-04-22
+## ----
+## --- There are 2 files available ---
+## 
+## 
+## ── Downloading files ──────────────────────────────────────
+## 
+##   1 of 2: &quot;daily_accidents.csv&quot;
+##   2 of 2: &quot;daily_accidents_420.csv&quot;</code></pre>
+<pre class="r"><code>daily_accidents &lt;- tuesdata$daily_accidents
+daily_accidents_420 &lt;- tuesdata$daily_accidents_420</code></pre>
+<div id="the-questions" class="section level3">
+<h3>The Questions</h3>
+<ol style="list-style-type: decimal">
+<li>Can you detect any correlations between fatal car crashes and
+particular days of the year? <br/></li>
+<li>What are the most dangerous days of the year for fatal car crashes
+in the United States? <br/></li>
+<li>Is driving on April 20th more dangerous than other days of the year?
+<br/></li>
+<li>How about other holidays, such as Christmas or the 4th of July?</li>
+</ol>
+</div>
+<div
+id="correlation-between-fatal-car-crashes-and-particular-days-of-the-year"
+class="section level2">
+<h2>1. Correlation between fatal car crashes and particular days of the
+year</h2>
+<p>To see if there is a correlation, I’ll use the daily_accidents
+dataset. My first step is to break out the date into separate day,
+month, and year variables.</p>
+<pre class="r"><code>daily_accidents &lt;- data.frame(date = daily_accidents$date,
+                 year = as.numeric(format(daily_accidents$date, format = &quot;%Y&quot;)),
+                 month = as.numeric(format(daily_accidents$date, format = &quot;%m&quot;)),
+                 day = as.numeric(format(daily_accidents$date, format = &quot;%d&quot;)),
+                 daily_accidents$fatalities_count)
+
+names(daily_accidents)[names(daily_accidents) == &quot;daily_accidents.fatalities_count&quot;] &lt;- &quot;fatalities&quot;
+
+head(daily_accidents)</code></pre>
+<pre><code>##         date year month day fatalities
+## 1 1992-01-01 1992     1   1        144
+## 2 1992-01-02 1992     1   2        111
+## 3 1992-01-07 1992     1   7         85
+## 4 1992-01-12 1992     1  12        127
+## 5 1992-01-03 1992     1   3        182
+## 6 1992-01-17 1992     1  17        130</code></pre>
+<p>Now that I’ve broken out the date into it’s components, I want to see
+if fatalities correlate to either the day, the month, year, or specific
+day.</p>
+<pre class="r"><code>day_corr &lt;- cor(daily_accidents$day, daily_accidents$fatalities)
+
+month_corr &lt;- cor(daily_accidents$month, daily_accidents$fatalities)
+
+year_corr &lt;- cor(daily_accidents$year, daily_accidents$fatalities)
+
+dates_corr &lt;- tibble(day_corr, month_corr, year_corr)
+
+dates_corr</code></pre>
+<pre><code>## # A tibble: 1 × 3
+##   day_corr month_corr year_corr
+##      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+## 1  -0.0388      0.260    -0.273</code></pre>
+<p>After doing some basic correlations, it looks like month and year
+have decent correlations around .25, but day has almost no correlation.
+But what does this mean? I’m going to visualize the distribution to see
+if we can see a trend.</p>
+<div id="months" class="section level4">
+<h4>Months</h4>
+<p>I’ll start by examining months.</p>
+<pre class="r"><code>daily_accidents_visual &lt;- daily_accidents %&gt;%
+  mutate(month_cat = case_when(
+    month == 1 ~ &quot;January&quot;,
+    month == 2 ~ &quot;February&quot;,
+    month == 3 ~ &quot;March&quot;,
+    month == 4 ~ &quot;April&quot;,
+    month == 5 ~ &quot;May&quot;,
+    month == 6 ~ &quot;June&quot;,
+    month == 7 ~ &quot;July&quot;,
+    month == 8 ~ &quot;August&quot;,
+    month == 9 ~ &quot;September&quot;,
+    month == 10 ~ &quot;October&quot;,
+    month == 11 ~ &quot;November&quot;,
+    month == 12 ~ &quot;December&quot;
+  ))
+
+month_regression &lt;- lm(fatalities ~ month, data = daily_accidents_visual)
+
+
+month_r_values &lt;- tibble(
+  month = 1:12,
+  month_cat = factor(month.name, levels = month.name),
+  pred = predict(month_regression, newdata = tibble(month = 1:12))
+)
+
+daily_accidents_visual %&gt;%
+  ggplot(aes(
+    x = fct(month_cat),
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25)+
+  geom_line(data = month_r_values, 
+            aes(x = month_cat, y = pred, group = 1), 
+            color = &quot;blue&quot;, 
+            size = 1) +
+  theme_bw()+
+  labs(
+    x = &quot;Month&quot;,
+    y = &quot;Number of Fatal car crashes&quot;,
+    title = &quot;Fatal car crashes by month&quot;
+  )</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2
+## 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where
+## this warning was generated.</code></pre>
+<p><img src="4-20-25_files/figure-html/month%20corr%20visual-1.png" width="672" /></p>
+<p>Based on my knowledge of correlation, a correlation of .26 means that
+there is a slight increase in fatalities as we progress in the calendar
+year. This graph looks more sinusoidal, so I’ll change the blue line to
+allow for curvature.</p>
+<pre class="r"><code>monthly_means &lt;- daily_accidents_visual %&gt;%
+  group_by(month_cat) %&gt;%
+  summarise(mean_fatalities = mean(fatalities, na.rm = TRUE)) %&gt;%
+  mutate(month_cat = factor(month_cat, levels = month.name))
+
+daily_accidents_visual %&gt;%
+  ggplot(aes(
+    x = fct(month_cat),
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25, color = &quot;gray&quot;)+
+  geom_smooth(aes(x = month), 
+              method = &quot;loess&quot;, 
+              se = FALSE, 
+              color = &quot;blue&quot;, 
+              size = 1, 
+              data = daily_accidents_visual) +
+  geom_point(data = monthly_means, 
+             aes(x = month_cat, y = mean_fatalities), 
+             color = &quot;tomato1&quot;, 
+             size = 2) +
+  theme_bw()+
+  labs(
+    x = &quot;Month&quot;,
+    y = &quot;Number of Fatalities in the month&quot;,
+    title = &quot;Fatal car crashes by month with a non-linear line&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="4-20-25_files/figure-html/month%20corr%20visual%202-1.png" width="672" /></p>
+<p>As you can see, there is actually more of a sinusoidal curve to the
+data, as the peak months are late summer/early fall.</p>
+</div>
+<div id="days" class="section level4">
+<h4>Days</h4>
+<p>Even though days have an almost zero correlation, I’m still
+interested in seeing how the data look.</p>
+<pre class="r"><code>daily_means &lt;- daily_accidents_visual %&gt;%
+  group_by(day) %&gt;%
+  summarise(mean_fatalities = mean(fatalities, na.rm = TRUE))
+
+daily_accidents_visual %&gt;%
+  ggplot(aes(
+    x = day,
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25, color = &quot;gray&quot;)+
+  geom_point(data = daily_means, aes(x = day, y = mean_fatalities), color = &quot;blue&quot;, size = 2) +
+  geom_smooth(color = &quot;black&quot;, alpha = .6)+
+  theme_bw()+
+  labs(
+    x = &quot;Days&quot;,
+    y = &quot;Number of Fatalities&quot;,
+    title = &quot;Fatal car crashes by day&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula = &#39;y ~
+## s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="4-20-25_files/figure-html/day%20corr%20visual-1.png" width="672" /></p>
+<p>There doesn’t appear to be any variation at all in the days, which is
+why the correlation is so low. What is interesting is that there is
+again a kind of wave pattern that appears roughly every 5-7 days. I
+would say this corresponded to days of the week, but it would be
+different for every month and every year.</p>
+</div>
+<div id="years" class="section level4">
+<h4>Years</h4>
+<pre class="r"><code>year_means &lt;- daily_accidents_visual %&gt;%
+  group_by(year) %&gt;%
+  summarise(mean_fatalities = mean(fatalities, na.rm = TRUE))
+
+
+
+daily_accidents_visual %&gt;%
+  ggplot(aes(
+    x = year,
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25, color = &quot;gray&quot;)+
+  geom_smooth(color = &quot;blue&quot;, alpha = .6)+
+  geom_point(data = year_means, aes(x = year, y = mean_fatalities), color = &quot;coral3&quot;, size = 2) +
+  theme_bw()+
+  annotate(&quot;text&quot;, 
+           x = 1992, y = 60, 
+           label = &quot;1992&quot;, 
+           vjust = 2, 
+           color = &quot;black&quot;)+
+   annotate(&quot;text&quot;, 
+           x = 2016, y = 60, 
+           label = &quot;2016&quot;, 
+           vjust = 2, 
+           color = &quot;black&quot;)+
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Number of Fatalities&quot;,
+    title = &quot;Fatal car crashes by year&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula = &#39;y ~
+## s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="4-20-25_files/figure-html/corr%20year-1.png" width="672" /></p>
+<pre class="r"><code>min(daily_accidents_visual$year)</code></pre>
+<pre><code>## [1] 1992</code></pre>
+<pre class="r"><code>max(daily_accidents_visual$year)</code></pre>
+<pre><code>## [1] 2016</code></pre>
+<p>Now this provides a much more interesting look into car fatalities.
+We have data from 1992 to 2016. There was a massive dip in fatalities
+around 2005, but an increase around 2013/2014. After some quick
+googling, it looks like there were behavioral and vehicle safety
+programs created and implemented around this time that led to the
+decline. Very cool, and why there was a negative correlation.</p>
+</div>
+</div>
+<div
+id="what-are-the-most-dangerous-days-of-the-year-for-fatal-car-crashes-in-the-united-states"
+class="section level2">
+<h2>2. What are the most dangerous days of the year for fatal car
+crashes in the United States?</h2>
+<pre class="r"><code>daily_accidents %&gt;%
+  arrange(desc(fatalities)) %&gt;%
+head()</code></pre>
+<pre><code>##         date year month day fatalities
+## 1 2007-11-03 2007    11   3        299
+## 2 2001-02-22 2001     2  22        285
+## 3 1998-09-04 1998     9   4        273
+## 4 1996-08-24 1996     8  24        270
+## 5 1993-06-19 1993     6  19        266
+## 6 2000-09-30 2000     9  30        258</code></pre>
+<p>The worst day for car crashes was November 3rd, 2007. There were 299
+fatal car crashes.</p>
+<pre class="r"><code>daily_accidents %&gt;%
+  distinct(day, fatalities) %&gt;%
+    group_by(day) %&gt;%
+  summarize(total_fatal = sum(fatalities)) %&gt;%
+    arrange(desc(total_fatal)) %&gt;%
+head()</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##     day total_fatal
+##   &lt;dbl&gt;       &lt;dbl&gt;
+## 1     3       19244
+## 2    16       18691
+## 3    24       18461
+## 4    11       18375
+## 5    10       18296
+## 6    22       18288</code></pre>
+<pre class="r"><code>daily_accidents %&gt;%
+  distinct(day, fatalities) %&gt;%
+    group_by(day) %&gt;%
+  summarize(avg_fatal = mean(fatalities)) %&gt;%
+    arrange(desc(avg_fatal)) %&gt;%
+head()</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##     day avg_fatal
+##   &lt;dbl&gt;     &lt;dbl&gt;
+## 1     3      155.
+## 2     1      154.
+## 3     4      153.
+## 4    13      153.
+## 5    30      153.
+## 6    20      153.</code></pre>
+<p>The day with the most fatalities is the 3rd of the month, with 19,244
+fatal car crashes. The third also hold the highest average amount of
+fatalities, with around 155 fatalities every 3rd of the month. Maybe we
+should stop driving on the 3rd of the month…</p>
+</div>
+<div
+id="is-driving-on-april-20th-more-dangerous-than-other-days-of-the-year"
+class="section level2">
+<h2>3. Is driving on April 20th more dangerous than other days of the
+year?</h2>
+<p>To answer this question, I’ll use the daily_accidents_420 dataset,
+which conveniently created an indicator of 4/20.</p>
+<pre class="r"><code>daily_accidents_420 &lt;- daily_accidents_420 %&gt;%
+  filter(!e420 == &quot;NA&quot;)
+
+daily_accidents_420 %&gt;%
+  ggplot(aes(
+    x = e420,
+    y = fatalities_count
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = &quot;Is it 4/20?&quot;,
+    y = &quot;Fatal car crashes&quot;
+  )</code></pre>
+<p><img src="4-20-25_files/figure-html/420%20fatalities-1.png" width="672" /></p>
+<p>Based on the simple visual, it looks like there are actually less
+fatal car crashes on 4/20. To confirm this, I’m going to run an t-test
+to see if the groups are different.</p>
+<pre class="r"><code>t.test(fatalities_count ~ e420, data = daily_accidents_420)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  fatalities_count by e420
+## t = 29.369, df = 24.632, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means between group FALSE and group TRUE is not equal to 0
+## 95 percent confidence interval:
+##  83.98584 96.66370
+## sample estimates:
+## mean in group FALSE  mean in group TRUE 
+##            144.9248             54.6000</code></pre>
+<p>The p value is extremely significant, indicating that driving on 420
+causes less fatal car crashes. <br/> <br/></p>
+</div>
+<div
+id="how-about-other-holidays-such-as-christmas-new-years-eve-or-4th-of-july"
+class="section level2">
+<h2>4. How about other holidays, such as Christmas, New years Eve, or
+4th of July?</h2>
+<p>I’ll start with Christmas, 12/25. Unlike 4/20, I don’t already have a
+variable that identifies the specific dates. I now need to create a
+Christmas Y/N variable. I could use filter(), but I would have to
+combine</p>
+<div id="christmas" class="section level3">
+<h3>Christmas</h3>
+<pre class="r"><code>Christmas &lt;- daily_accidents %&gt;%
+  mutate(Christmas = if_else(
+    day == 25 &amp; month == 12, &quot;Christmas&quot;, &quot;Not Christmas&quot;
+  ))
+
+Christmas %&gt;%
+  ggplot(aes(
+    x = Christmas,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = &quot;Is it Christmas?&quot;,
+    y = &quot;Fatal car crashes&quot;
+  )</code></pre>
+<p><img src="4-20-25_files/figure-html/christmas%20fatalities-1.png" width="672" /></p>
+<p>Ok so here it’s less clear if there is a difference of fatalities for
+Christmas. As before, I’ll do a t-test to confirm this.</p>
+<pre class="r"><code>t.test(fatalities ~ Christmas, data = Christmas)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  fatalities by Christmas
+## t = -6.8592, df = 24.25, p-value = 4.058e-07
+## alternative hypothesis: true difference in means between group Christmas and group Not Christmas is not equal to 0
+## 95 percent confidence interval:
+##  -43.24549 -23.24854
+## sample estimates:
+##     mean in group Christmas mean in group Not Christmas 
+##                     111.920                     145.167</code></pre>
+<p>As before, the p value is very significant, indicating there are less
+car crash fatalities on Christmas.</p>
+</div>
+<div id="new-years" class="section level3">
+<h3>New Years</h3>
+<p>I’m now going to do this by creating a function. I tried using the
+first chunk of code, and the second chunk I got from chat GPT.</p>
+<pre class="r"><code>day_oty &lt;- function(name, specific_month, specific_day) {
+name &lt;- daily_accidents %&gt;%
+  mutate(name = if_else(
+    day == specific_day &amp; month == specific_month, &quot;Yes&quot;, &quot;No&quot;
+  ))
+}</code></pre>
+<pre class="r"><code>day_oty &lt;- function(name, specific_month, specific_day) {
+  daily_accidents %&gt;%
+    mutate({{name}} := if_else(
+        day == specific_day &amp; month == specific_month, &quot;Yes&quot;, &quot;No&quot;
+      ))
+}</code></pre>
+<p>Great. Now we can see if there is a difference.</p>
+<pre class="r"><code>NYE &lt;- day_oty(NYE, 12, 31)
+
+NYE %&gt;%
+  ggplot(aes(
+    x = NYE,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = &quot;Is it New years eve?&quot;,
+    y = &quot;Fatal car crashes&quot;
+  )</code></pre>
+<p><img src="4-20-25_files/figure-html/new%20years%20fatalities-1.png" width="672" /></p>
+<pre class="r"><code>t.test(fatalities ~ NYE, data = NYE)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  fatalities by NYE
+## t = 1.2682, df = 24.219, p-value = 0.2168
+## alternative hypothesis: true difference in means between group No and group Yes is not equal to 0
+## 95 percent confidence interval:
+##  -4.119777 17.267764
+## sample estimates:
+##  mean in group No mean in group Yes 
+##           145.094           138.520</code></pre>
+<p>For new years eve, there actually isn’t a difference, indicating that
+New Years Eve might be the same as any normal day.</p>
+</div>
+<div id="th-of-july" class="section level3">
+<h3>4th of July</h3>
+<pre class="r"><code>july4 &lt;- day_oty(july4, 7, 4)
+
+july4 %&gt;%
+  ggplot(aes(
+    x = july4,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = &quot;Is it July 4th?&quot;,
+    y = &quot;Fatal car crashes&quot;
+  )</code></pre>
+<p><img src="4-20-25_files/figure-html/4th%20of%20july%20fatalities-1.png" width="672" /></p>
+<pre class="r"><code>t.test(fatalities ~ july4, data = july4)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  fatalities by july4
+## t = -6.3811, df = 24.249, p-value = 1.282e-06
+## alternative hypothesis: true difference in means between group No and group Yes is not equal to 0
+## 95 percent confidence interval:
+##  -41.03296 -20.98483
+## sample estimates:
+##  mean in group No mean in group Yes 
+##          144.9911          176.0000</code></pre>
+<p>We have a winner! It looks like there are actually more fatalities on
+July 4th than normal (p &lt;.001). Maybe stick to fireworks in the
+backyard.</p>
+</div>
+</div>
+<div id="bonus---so-what-about-holidays-that-vary-like-thanksgiving"
+class="section level2">
+<h2>Bonus - So what about holidays that vary, like Thanksgiving?</h2>
+<p>As I was trying to fit the function, chatGPT said I could fit the
+function to dynamic holidays like thanksgiving. Thanksgiving falls on
+the 4th thursday of every november. This means that november will be the
+same, but the day will change every year.</p>
+<pre class="r"><code>daily_accidents &lt;- daily_accidents %&gt;%
+    mutate(date = make_date(year, month, day))
+
+check_thanksgiving &lt;- function(df) {
+  
+  thanksgiving_flags &lt;- df %&gt;%
+    filter(month(date) == 11) %&gt;%
+    arrange(date) %&gt;%
+    group_by(year(date)) %&gt;%
+    mutate(
+      weekday = wday(date, label = TRUE),
+      thursday_count = cumsum(weekday == &quot;Thu&quot;),
+      is_thanksgiving = if_else(weekday == &quot;Thu&quot; &amp; thursday_count == 4, &quot;Yes&quot;, &quot;No&quot;)
+    ) %&gt;%
+    ungroup() %&gt;%
+    select(date, is_thanksgiving)
+
+  # Merge flags back into the main data
+  df %&gt;%
+    left_join(thanksgiving_flags, by = &quot;date&quot;) %&gt;%
+    mutate(is_thanksgiving = replace_na(is_thanksgiving, &quot;No&quot;))
+  
+}
+
+
+thanksgiving_accidents &lt;- check_thanksgiving(daily_accidents)
+
+head(thanksgiving_accidents)</code></pre>
+<pre><code>##         date year month day fatalities is_thanksgiving
+## 1 1992-01-01 1992     1   1        144              No
+## 2 1992-01-02 1992     1   2        111              No
+## 3 1992-01-07 1992     1   7         85              No
+## 4 1992-01-12 1992     1  12        127              No
+## 5 1992-01-03 1992     1   3        182              No
+## 6 1992-01-17 1992     1  17        130              No</code></pre>
+<p>What this has done is that it filtered the data to just be November
+months and days, and arranged based on the year. From there, it created
+a weekday variable and a variable that counted the number of Thursdays
+in the month. It then created a final “is thanksgiving” variable that
+was based on it being the 4th Thursday. It took this variable and merged
+it with the original daily_accidents dataset.</p>
+<pre class="r"><code>thanksgiving_accidents %&gt;%
+  ggplot(aes(
+    x = is_thanksgiving,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = &quot;Is it Thanksgiving?&quot;,
+    y = &quot;Fatal car crashes&quot;
+  )</code></pre>
+<p><img src="4-20-25_files/figure-html/thanksgiving%20difference-1.png" width="672" /></p>
+<pre class="r"><code>t.test(fatalities ~ is_thanksgiving, data = thanksgiving_accidents)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  fatalities by is_thanksgiving
+## t = 0.94434, df = 24.223, p-value = 0.3543
+## alternative hypothesis: true difference in means between group No and group Yes is not equal to 0
+## 95 percent confidence interval:
+##  -5.743886 15.442430
+## sample estimates:
+##  mean in group No mean in group Yes 
+##          145.0893          140.2400</code></pre>
+<p>Like NYE, there actually isn’t a difference, indicating that
+Thanksgiving might be the same as any normal day.</p>
+<div id="other-days" class="section level4">
+<h4>Other days</h4>
+<p>This could theoretically be done with any changing date based on the
+calendar. I can change it to be black Friday, which is the 4th Friday of
+every November</p>
+<pre class="r"><code>check_black_friday &lt;- function(df) {
+  
+  black_friday &lt;- df %&gt;%
+    filter(month(date) == 11) %&gt;%
+    arrange(date) %&gt;%
+    group_by(year(date)) %&gt;%
+    mutate(
+      weekday = wday(date, label = TRUE),
+      friday_count = cumsum(weekday == &quot;Fri&quot;),
+      is_black_friday = if_else(weekday == &quot;Fri&quot; &amp; friday_count == 4, &quot;Yes&quot;, &quot;No&quot;)
+    ) %&gt;%
+    ungroup() %&gt;%
+    select(date, is_black_friday)
+
+  df %&gt;%
+    left_join(black_friday, by = &quot;date&quot;) %&gt;%
+    mutate(is_black_friday = replace_na(is_black_friday, &quot;No&quot;))
+  
+}
+
+
+black_friday_accidents &lt;- check_black_friday(daily_accidents)
+
+head(black_friday_accidents)</code></pre>
+<pre><code>##         date year month day fatalities is_black_friday
+## 1 1992-01-01 1992     1   1        144              No
+## 2 1992-01-02 1992     1   2        111              No
+## 3 1992-01-07 1992     1   7         85              No
+## 4 1992-01-12 1992     1  12        127              No
+## 5 1992-01-03 1992     1   3        182              No
+## 6 1992-01-17 1992     1  17        130              No</code></pre>
+<pre class="r"><code>black_friday_accidents %&gt;%
+  ggplot(aes(
+    x = is_black_friday,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = &quot;Is it black friday?&quot;,
+    y = &quot;Fatal car crashes&quot;
+  )</code></pre>
+<p><img src="4-20-25_files/figure-html/black%20friday%20difference-1.png" width="672" /></p>
+<pre class="r"><code>t.test(fatalities ~ is_black_friday, data = black_friday_accidents)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  fatalities by is_black_friday
+## t = -1.2, df = 24.203, p-value = 0.2418
+## alternative hypothesis: true difference in means between group No and group Yes is not equal to 0
+## 95 percent confidence interval:
+##  -17.570310   4.646924
+## sample estimates:
+##  mean in group No mean in group Yes 
+##          145.0583          151.5200</code></pre>
+<p>Cool. This is pretty similar to Thanksgiving, where there is no
+difference.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,516 @@
+---
+title: "Holiday Fatal Car Crashes"
+output: html_document
+---
+
+#### Created 4/21/2025
+
+```{r load-packages, message = FALSE, warning = FALSE, echo = FALSE}
+library(tidyverse) 
+library(ggplot2)
+library(skimr)
+library(corrr)
+
+
+```
+
+
+# Tidy Tuesday - 4/20/2025
+
+The Tidy Tuesday for this week explored fatal crashes on 4/20, the "marijuana holiday." Through the data I'm going to attempt to show that there is actually no link between crashes and inhibition due to marijuana. This should be similar to lab 7's visualization of bad data lab.
+
+```{r setup}
+
+tuesdata <- tidytuesdayR::tt_load(2025, week = 16)
+
+daily_accidents <- tuesdata$daily_accidents
+daily_accidents_420 <- tuesdata$daily_accidents_420
+
+
+
+```
+
+### The Questions
+1. Can you detect any correlations between fatal car crashes and particular days of the year? <br/>
+2. What are the most dangerous days of the year for fatal car crashes in the United States? <br/>
+3. Is driving on April 20th more dangerous than other days of the year? <br/>
+4. How about other holidays, such as Christmas or the 4th of July?
+
+
+## 1. Correlation between fatal car crashes and particular days of the year
+
+To see if there is a correlation, I'll use the daily_accidents dataset. My first step is to break out the date into separate day, month, and year variables.
+
+```{r separate out date}
+
+daily_accidents <- data.frame(date = daily_accidents$date,
+                 year = as.numeric(format(daily_accidents$date, format = "%Y")),
+                 month = as.numeric(format(daily_accidents$date, format = "%m")),
+                 day = as.numeric(format(daily_accidents$date, format = "%d")),
+                 daily_accidents$fatalities_count)
+
+names(daily_accidents)[names(daily_accidents) == "daily_accidents.fatalities_count"] <- "fatalities"
+
+head(daily_accidents)
+
+```
+
+Now that I've broken out the date into it's components, I want to see if fatalities correlate to either the day, the month, year, or specific day.
+
+```{r correlation dates to fatalities}
+
+day_corr <- cor(daily_accidents$day, daily_accidents$fatalities)
+
+month_corr <- cor(daily_accidents$month, daily_accidents$fatalities)
+
+year_corr <- cor(daily_accidents$year, daily_accidents$fatalities)
+
+dates_corr <- tibble(day_corr, month_corr, year_corr)
+
+dates_corr
+```
+
+After doing some basic correlations, it looks like month and year have decent correlations around .25, but day has almost no correlation. But what does this mean? I'm going to visualize the distribution to see if we can see a trend.
+
+#### Months
+
+I'll start by examining months.
+
+```{r month corr visual}
+
+daily_accidents_visual <- daily_accidents %>%
+  mutate(month_cat = case_when(
+    month == 1 ~ "January",
+    month == 2 ~ "February",
+    month == 3 ~ "March",
+    month == 4 ~ "April",
+    month == 5 ~ "May",
+    month == 6 ~ "June",
+    month == 7 ~ "July",
+    month == 8 ~ "August",
+    month == 9 ~ "September",
+    month == 10 ~ "October",
+    month == 11 ~ "November",
+    month == 12 ~ "December"
+  ))
+
+month_regression <- lm(fatalities ~ month, data = daily_accidents_visual)
+
+
+month_r_values <- tibble(
+  month = 1:12,
+  month_cat = factor(month.name, levels = month.name),
+  pred = predict(month_regression, newdata = tibble(month = 1:12))
+)
+
+daily_accidents_visual %>%
+  ggplot(aes(
+    x = fct(month_cat),
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25)+
+  geom_line(data = month_r_values, 
+            aes(x = month_cat, y = pred, group = 1), 
+            color = "blue", 
+            size = 1) +
+  theme_bw()+
+  labs(
+    x = "Month",
+    y = "Number of Fatal car crashes",
+    title = "Fatal car crashes by month"
+  )
+
+```
+
+Based on my knowledge of correlation, a correlation of .26 means that there is a slight increase in fatalities as we progress in the calendar year. This graph looks more sinusoidal, so I'll change the blue line to allow for curvature.
+
+```{r month corr visual 2}
+
+
+monthly_means <- daily_accidents_visual %>%
+  group_by(month_cat) %>%
+  summarise(mean_fatalities = mean(fatalities, na.rm = TRUE)) %>%
+  mutate(month_cat = factor(month_cat, levels = month.name))
+
+daily_accidents_visual %>%
+  ggplot(aes(
+    x = fct(month_cat),
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25, color = "gray")+
+  geom_smooth(aes(x = month), 
+              method = "loess", 
+              se = FALSE, 
+              color = "blue", 
+              size = 1, 
+              data = daily_accidents_visual) +
+  geom_point(data = monthly_means, 
+             aes(x = month_cat, y = mean_fatalities), 
+             color = "tomato1", 
+             size = 2) +
+  theme_bw()+
+  labs(
+    x = "Month",
+    y = "Number of Fatalities in the month",
+    title = "Fatal car crashes by month with a non-linear line"
+  )
+
+```
+
+As you can see, there is actually more of a sinusoidal curve to the data, as the peak months are late summer/early fall.
+
+#### Days
+
+Even though days have an almost zero correlation, I'm still interested in seeing how the data look.
+
+```{r day corr visual}
+
+daily_means <- daily_accidents_visual %>%
+  group_by(day) %>%
+  summarise(mean_fatalities = mean(fatalities, na.rm = TRUE))
+
+daily_accidents_visual %>%
+  ggplot(aes(
+    x = day,
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25, color = "gray")+
+  geom_point(data = daily_means, aes(x = day, y = mean_fatalities), color = "blue", size = 2) +
+  geom_smooth(color = "black", alpha = .6)+
+  theme_bw()+
+  labs(
+    x = "Days",
+    y = "Number of Fatalities",
+    title = "Fatal car crashes by day"
+  )
+
+```
+
+There doesn't appear to be any variation at all in the days, which is why the correlation is so low. What is interesting is that there is again a kind of wave pattern that appears roughly every 5-7 days. I would say this corresponded to days of the week, but it would be different for every month and every year.
+
+
+#### Years
+
+```{r corr year}
+
+year_means <- daily_accidents_visual %>%
+  group_by(year) %>%
+  summarise(mean_fatalities = mean(fatalities, na.rm = TRUE))
+
+
+
+daily_accidents_visual %>%
+  ggplot(aes(
+    x = year,
+    y = fatalities
+  ))+
+  geom_jitter(alpha = .4, width = .25, color = "gray")+
+  geom_smooth(color = "blue", alpha = .6)+
+  geom_point(data = year_means, aes(x = year, y = mean_fatalities), color = "coral3", size = 2) +
+  theme_bw()+
+  annotate("text", 
+           x = 1992, y = 60, 
+           label = "1992", 
+           vjust = 2, 
+           color = "black")+
+   annotate("text", 
+           x = 2016, y = 60, 
+           label = "2016", 
+           vjust = 2, 
+           color = "black")+
+  labs(
+    x = "Year",
+    y = "Number of Fatalities",
+    title = "Fatal car crashes by year"
+  )
+
+min(daily_accidents_visual$year)
+max(daily_accidents_visual$year)
+
+```
+
+Now this provides a much more interesting look into car fatalities. We have data from 1992 to 2016. There was a massive dip in fatalities around 2005, but an increase around 2013/2014. After some quick googling, it looks like there were behavioral and vehicle safety programs created and implemented around this time that led to the decline. Very cool, and why there was a negative correlation.
+
+## 2. What are the most dangerous days of the year for fatal car crashes in the United States?
+
+```{r most fatal day}
+
+daily_accidents %>%
+  arrange(desc(fatalities)) %>%
+head()
+
+```
+
+The worst day for car crashes was November 3rd, 2007. There were 299 fatal car crashes.
+
+```{r fatal days}
+
+daily_accidents %>%
+  distinct(day, fatalities) %>%
+    group_by(day) %>%
+  summarize(total_fatal = sum(fatalities)) %>%
+    arrange(desc(total_fatal)) %>%
+head()
+
+
+daily_accidents %>%
+  distinct(day, fatalities) %>%
+    group_by(day) %>%
+  summarize(avg_fatal = mean(fatalities)) %>%
+    arrange(desc(avg_fatal)) %>%
+head()
+
+```
+
+The day with the most fatalities is the 3rd of the month, with 19,244 fatal car crashes. The third also hold the highest average amount of fatalities, with around 155 fatalities every 3rd of the month. Maybe we should stop driving on the 3rd of the month...
+
+## 3. Is driving on April 20th more dangerous than other days of the year?
+
+To answer this question, I'll use the daily_accidents_420 dataset, which conveniently created an indicator of 4/20.
+
+```{r 420 fatalities}
+
+daily_accidents_420 <- daily_accidents_420 %>%
+  filter(!e420 == "NA")
+
+daily_accidents_420 %>%
+  ggplot(aes(
+    x = e420,
+    y = fatalities_count
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = "Is it 4/20?",
+    y = "Fatal car crashes"
+  )
+  
+
+```
+
+Based on the simple visual, it looks like there are actually less fatal car crashes on 4/20. To confirm this, I'm going to run an t-test to see if the groups are different.
+
+```{r 4/20 t test}
+
+t.test(fatalities_count ~ e420, data = daily_accidents_420)
+
+```
+
+The p value is extremely significant, indicating that driving on 420 causes less fatal car crashes. <br/> <br/>
+
+## 4. How about other holidays, such as Christmas, New years Eve, or 4th of July?
+
+I'll start with Christmas, 12/25. Unlike 4/20, I don't already have a variable that identifies the specific dates. I now need to create a Christmas Y/N variable. I could use filter(), but I would have to combine 
+
+### Christmas
+
+```{r christmas fatalities}
+
+Christmas <- daily_accidents %>%
+  mutate(Christmas = if_else(
+    day == 25 & month == 12, "Christmas", "Not Christmas"
+  ))
+
+Christmas %>%
+  ggplot(aes(
+    x = Christmas,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = "Is it Christmas?",
+    y = "Fatal car crashes"
+  )
+
+```
+
+Ok so here it's less clear if there is a difference of fatalities for Christmas. As before, I'll do a t-test to confirm this.
+
+```{r Christmas t test}
+
+t.test(fatalities ~ Christmas, data = Christmas)
+
+```
+
+As before, the p value is very significant, indicating there are less car crash fatalities on Christmas.
+
+### New Years
+
+I'm now going to do this by creating a function. I tried using the first chunk of code, and the second chunk I got from chat GPT.
+
+```{r my attempt at function for yn variable, eval = FALSE}
+
+day_oty <- function(name, specific_month, specific_day) {
+name <- daily_accidents %>%
+  mutate(name = if_else(
+    day == specific_day & month == specific_month, "Yes", "No"
+  ))
+}
+```
+
+```{r function for yes and no var}
+day_oty <- function(name, specific_month, specific_day) {
+  daily_accidents %>%
+    mutate({{name}} := if_else(
+        day == specific_day & month == specific_month, "Yes", "No"
+      ))
+}
+
+```
+
+
+Great. Now we can see if there is a difference.
+
+```{r new years fatalities}
+
+NYE <- day_oty(NYE, 12, 31)
+
+NYE %>%
+  ggplot(aes(
+    x = NYE,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = "Is it New years eve?",
+    y = "Fatal car crashes"
+  )
+
+t.test(fatalities ~ NYE, data = NYE)
+
+```
+
+For new years eve, there actually isn't a difference, indicating that New Years Eve might be the same as any normal day.
+
+### 4th of July
+
+```{r 4th of july fatalities}
+
+july4 <- day_oty(july4, 7, 4)
+
+july4 %>%
+  ggplot(aes(
+    x = july4,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = "Is it July 4th?",
+    y = "Fatal car crashes"
+  )
+
+t.test(fatalities ~ july4, data = july4)
+
+```
+
+We have a winner! It looks like there are actually more fatalities on July 4th than normal (p <.001). Maybe stick to fireworks in the backyard.
+
+## Bonus - So what about holidays that vary, like Thanksgiving?
+
+As I was trying to fit the function, chatGPT said I could fit the function to dynamic holidays like thanksgiving. Thanksgiving falls on the 4th thursday of every november. This means that november will be the same, but the day will change every year.
+
+```{r thanksgiving function}
+
+daily_accidents <- daily_accidents %>%
+    mutate(date = make_date(year, month, day))
+
+check_thanksgiving <- function(df) {
+  
+  thanksgiving_flags <- df %>%
+    filter(month(date) == 11) %>%
+    arrange(date) %>%
+    group_by(year(date)) %>%
+    mutate(
+      weekday = wday(date, label = TRUE),
+      thursday_count = cumsum(weekday == "Thu"),
+      is_thanksgiving = if_else(weekday == "Thu" & thursday_count == 4, "Yes", "No")
+    ) %>%
+    ungroup() %>%
+    select(date, is_thanksgiving)
+
+  # Merge flags back into the main data
+  df %>%
+    left_join(thanksgiving_flags, by = "date") %>%
+    mutate(is_thanksgiving = replace_na(is_thanksgiving, "No"))
+  
+}
+
+
+thanksgiving_accidents <- check_thanksgiving(daily_accidents)
+
+head(thanksgiving_accidents)
+
+```
+
+What this has done is that it filtered the data to just be November months and days, and arranged based on the year. From there, it created a weekday variable and a variable that counted the number of Thursdays in the month. It then created a final "is thanksgiving" variable that was based on it being the 4th Thursday. It took this variable and merged it with the original daily_accidents dataset.
+
+
+```{r thanksgiving difference}
+
+thanksgiving_accidents %>%
+  ggplot(aes(
+    x = is_thanksgiving,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = "Is it Thanksgiving?",
+    y = "Fatal car crashes"
+  )
+
+t.test(fatalities ~ is_thanksgiving, data = thanksgiving_accidents)
+
+```
+
+Like NYE, there actually isn't a difference, indicating that Thanksgiving might be the same as any normal day.
+
+#### Other days
+
+This could theoretically be done with any changing date based on the calendar. I can change it to be black Friday, which is the 4th Friday of every November
+
+```{r black friday function}
+
+check_black_friday <- function(df) {
+  
+  black_friday <- df %>%
+    filter(month(date) == 11) %>%
+    arrange(date) %>%
+    group_by(year(date)) %>%
+    mutate(
+      weekday = wday(date, label = TRUE),
+      friday_count = cumsum(weekday == "Fri"),
+      is_black_friday = if_else(weekday == "Fri" & friday_count == 4, "Yes", "No")
+    ) %>%
+    ungroup() %>%
+    select(date, is_black_friday)
+
+  df %>%
+    left_join(black_friday, by = "date") %>%
+    mutate(is_black_friday = replace_na(is_black_friday, "No"))
+  
+}
+
+
+black_friday_accidents <- check_black_friday(daily_accidents)
+
+head(black_friday_accidents)
+
+```
+
+```{r black friday difference}
+
+black_friday_accidents %>%
+  ggplot(aes(
+    x = is_black_friday,
+    y = fatalities
+  ))+
+  geom_jitter(width = .2)+
+  labs(
+    x = "Is it black friday?",
+    y = "Fatal car crashes"
+  )
+
+t.test(fatalities ~ is_black_friday, data = black_friday_accidents)
+
+```
+
+Cool. This is pretty similar to Thanksgiving, where there is no difference.

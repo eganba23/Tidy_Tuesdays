@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Movies with Summer in the Title</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="Aesthetics.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Egan's Tidy Tuesdays</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li>
+  <a href="7-30-24.html">July 30th, 2025</a>
+</li>
+<li>
+  <a href="4-20-25.html">April 20th, 2024</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Movies with Summer in the Title</h1>
+
+</div>
+
+
+<div id="created-on-3325" class="section level5">
+<h5>Created on 3/3/25</h5>
+</div>
+<div id="tidy-tuesday---7302024" class="section level1">
+<h1>Tidy Tuesday - 7/30/2024</h1>
+<p>The Tidy Tuesday for the week explored movies with “summer” in their
+title. They scraped the data from IMDB’s website.</p>
+<pre class="r"><code>tuesdata &lt;- tidytuesdayR::tt_load(&#39;2024-07-30&#39;)</code></pre>
+<pre><code>## ---- Compiling #TidyTuesday Information for 2024-07-30
+## ----
+## --- There are 2 files available ---
+## 
+## 
+## ── Downloading files ──────────────────────────────────────
+## 
+##   1 of 2: &quot;summer_movie_genres.csv&quot;
+##   2 of 2: &quot;summer_movies.csv&quot;</code></pre>
+<pre class="r"><code>summer_movie_genres &lt;- tuesdata$summer_movie_genres
+summer_movies &lt;- tuesdata$summer_movies
+
+view(summer_movie_genres)
+view(summer_movies)</code></pre>
+<p>In this Tidy Tuesday, there are two data files, summer_movies_genres,
+and summer_movies. The data set summer_movies_genres includes unique ID
+numbers for each film alongside the genre.</p>
+<div id="summer_movie_genres-data" class="section level2">
+<h2>Summer_movie_genres data</h2>
+<pre class="r"><code>summer_movie_genres %&gt;%
+  ggplot(aes(
+    x = fct_rev(genres)
+  ))+
+  coord_flip()+
+  geom_bar()+
+  labs(
+    y = &quot;Movie Genre&quot;,
+    x = NULL,
+    title = &quot;Movies with Summer in the title&quot;
+  )+
+  theme_bw()</code></pre>
+<p><img src="7-30-24_files/figure-html/plot%20genres-1.png" width="672" /></p>
+<p>We can see that there are a large amount of drama, comedy, and
+romance films with “Summer” in the title compared to other genres. One
+category that surprised me were the number of reality shows that don’t
+have “Summer” in the title. It feels like there would be an appeal to
+the “Hot, Wet, and Wild” aspect of summer and reality TV.</p>
+<p>Update - after looking at movies in the summer_movies dataset as
+well, the summer_movie_genres places movies with multiple genres in each
+cateogry.</p>
+</div>
+<div id="summer_movies-data" class="section level2">
+<h2>Summer_movies data</h2>
+<p>There appears to be a lot more we can do with the summer_movies
+dataset. I first started by gathering a summary of what the data set
+offers.</p>
+<pre class="r"><code>skim(summer_movies)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">summer_movies</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">905</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">10</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">6</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="20%" />
+<col width="13%" />
+<col width="19%" />
+<col width="5%" />
+<col width="5%" />
+<col width="8%" />
+<col width="12%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">tconst</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">905</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">title_type</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">primary_title</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">6</td>
+<td align="right">83</td>
+<td align="right">0</td>
+<td align="right">779</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">original_title</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">70</td>
+<td align="right">0</td>
+<td align="right">838</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">genres</td>
+<td align="right">18</td>
+<td align="right">0.98</td>
+<td align="right">5</td>
+<td align="right">27</td>
+<td align="right">0</td>
+<td align="right">160</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">simple_title</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">6</td>
+<td align="right">80</td>
+<td align="right">0</td>
+<td align="right">778</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="15%" />
+<col width="9%" />
+<col width="13%" />
+<col width="7%" />
+<col width="8%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="8%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">year</td>
+<td align="right">1</td>
+<td align="right">1.00</td>
+<td align="right">2001.35</td>
+<td align="right">19.45</td>
+<td align="right">1920.0</td>
+<td align="right">1990.0</td>
+<td align="right">2008.0</td>
+<td align="right">2016.0</td>
+<td align="right">2024.0</td>
+<td align="left">▁▁▂▃▇</td>
+</tr>
+<tr class="even">
+<td align="left">runtime_minutes</td>
+<td align="right">56</td>
+<td align="right">0.94</td>
+<td align="right">91.04</td>
+<td align="right">23.85</td>
+<td align="right">5.0</td>
+<td align="right">82.0</td>
+<td align="right">91.0</td>
+<td align="right">101.0</td>
+<td align="right">237.0</td>
+<td align="left">▁▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">average_rating</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">6.27</td>
+<td align="right">1.25</td>
+<td align="right">2.3</td>
+<td align="right">5.6</td>
+<td align="right">6.4</td>
+<td align="right">7.1</td>
+<td align="right">9.8</td>
+<td align="left">▁▂▇▅▁</td>
+</tr>
+<tr class="even">
+<td align="left">num_votes</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">2296.29</td>
+<td align="right">20630.39</td>
+<td align="right">10.0</td>
+<td align="right">34.0</td>
+<td align="right">119.0</td>
+<td align="right">517.0</td>
+<td align="right">564894.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(summer_movies)</code></pre>
+<pre><code>##     tconst           title_type        primary_title      original_title    
+##  Length:905         Length:905         Length:905         Length:905        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##       year      runtime_minutes     genres          simple_title      
+##  Min.   :1920   Min.   :  5.00   Length:905         Length:905        
+##  1st Qu.:1990   1st Qu.: 82.00   Class :character   Class :character  
+##  Median :2008   Median : 91.00   Mode  :character   Mode  :character  
+##  Mean   :2001   Mean   : 91.04                                        
+##  3rd Qu.:2016   3rd Qu.:101.00                                        
+##  Max.   :2024   Max.   :237.00                                        
+##  NA&#39;s   :1      NA&#39;s   :56                                            
+##  average_rating    num_votes     
+##  Min.   :2.300   Min.   :    10  
+##  1st Qu.:5.600   1st Qu.:    34  
+##  Median :6.400   Median :   119  
+##  Mean   :6.274   Mean   :  2296  
+##  3rd Qu.:7.100   3rd Qu.:   517  
+##  Max.   :9.800   Max.   :564894  
+## </code></pre>
+<pre class="r"><code>view(summer_movies)</code></pre>
+<p>Using skim() I know there are 905 total movies. There are 10 columns
+in the dataset, including a unique ID for each movie. There are 6
+variables that use characters (tconst, title_type, primary_title,
+original_title, genres, and simple_title) and 4 variables that are
+strings (year, runtime_minutes, average_rating, num_votes).</p>
+<p>Using summary(), I can get basic statistics and identification for
+each variable.</p>
+<p>Using view() and looking up several movies on the IMDB website, I was
+able to understand more about what the observations for each variable
+are and why they are present in the dataset. Title_type makes the
+distinction of what kind of movie it was (movie, TV movie, video, etc.).
+Primary title is the title in English, original_title is the title in
+the native language, and simple title takes out all punctuation and
+excess characters (i.e. apostrophes, colons, semicolons). Genres are all
+the genres that the movie falls under. This can include multiple
+categories within one movie. Average_rating is the rating for each movie
+out of ten, and num_votes is how many people ranked the movie.</p>
+</div>
+<div id="visualization-and-exploration" class="section level2">
+<h2>Visualization and exploration</h2>
+<p>Now that I understand the data I’m working with, I can now begin to
+show trends and visualizations in the data.</p>
+<pre class="r"><code>summer_movies %&gt;%
+  ggplot(aes(
+    x = year,
+    y = average_rating
+  ))+
+  geom_smooth(size = 1,
+              span = .15)+
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Average Rating out of 10&quot;,
+    title = &quot;Average movie rating by year&quot;
+  )</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~
+## x&#39;</code></pre>
+<pre><code>## Warning: Removed 1 row containing non-finite outside the scale
+## range (`stat_smooth()`).</code></pre>
+<p><img src="7-30-24_files/figure-html/visualization%201-1.png" width="672" /></p>
+<p>The first graph I made shows the trend of movie ratings over time.
+Since there were few observations before 1950, the trend is not
+completely accurate. Ignoring this, we can see that the average movie is
+rated a 6/10. The exception is post 2020, as we can see a sharp
+spike.</p>
+<pre class="r"><code>summer_movies %&gt;%
+  ggplot(aes(
+    x = year,
+    y = average_rating
+  ))+
+  facet_wrap(~title_type, scale = &quot;free&quot;)+
+  geom_smooth(size = 1,
+              span = .15)+
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Average Rating out of 10&quot;,
+    title = &quot;Average movie rating by year&quot;,
+    subtitle = &quot;Facet by type of movie&quot;
+  )</code></pre>
+<p><img src="7-30-24_files/figure-html/visuation%202-1.png" width="960" /></p>
+<p>We can see slight variations in the data when we facet by type of
+movie. There is a variation in years between the types of movies. Based
+on history, it makes sense that TV Movies (1950s) and Videos (1990s)
+started being made later than regular movies. There is also changes in
+variability for each of the movie types.</p>
+<pre class="r"><code>summer_movies %&gt;%
+  ggplot(aes(
+    y = average_rating,
+    x = runtime_minutes
+  ))+
+  geom_smooth(size = 1,span = .5)+
+  labs(
+    y = &quot;rating&quot;,
+    x = &quot;runtime in minutes&quot;,
+    title = &quot;Average movie rating based on runtime&quot;,
+    subtitle = &quot;Facet by type of movie&quot;
+  )</code></pre>
+<p><img src="7-30-24_files/figure-html/visualization%203-1.png" width="672" /></p>
+<p>Here I compared run time to rating. There is an interesting
+bimodality to run time and rating, as movies around the 80 minute run
+time have lower ratings.</p>
+<p>Now I want understand the breakdown by decade for just movies.</p>
+<pre class="r"><code>movies_decade &lt;- summer_movies %&gt;%
+  mutate(year_bin = case_when(
+    year &lt; &quot;1940&quot; ~ &quot;1930s&quot;,
+    year &gt;= &quot;1940&quot; &amp; year &lt; &quot;1950&quot; ~ &quot;1940s&quot;,
+    year &gt;= &quot;1950&quot; &amp; year &lt; &quot;1960&quot; ~ &quot;1950s&quot;,
+    year &gt;= &quot;1960&quot; &amp; year &lt; &quot;1970&quot; ~ &quot;1960s&quot;,
+    year &gt;= &quot;1970&quot; &amp; year &lt; &quot;1980&quot; ~ &quot;1970s&quot;,
+    year &gt;= &quot;1980&quot; &amp; year &lt; &quot;1990&quot; ~ &quot;1980s&quot;,
+    year &gt;= &quot;1990&quot; &amp; year &lt; &quot;2000&quot; ~ &quot;1990s&quot;,
+    year &gt;= &quot;2000&quot; &amp; year &lt; &quot;2010&quot; ~ &quot;2000s&quot;,
+    year &gt;= &quot;2010&quot; &amp; year &lt; &quot;2020&quot; ~ &quot;2010s&quot;,
+    year &gt;= &quot;2020&quot; &amp; year &lt; &quot;2030&quot; ~ &quot;2020s&quot;,
+  ))
+
+movies_decade &lt;- movies_decade %&gt;%
+  filter(
+    title_type == &quot;movie&quot;
+  )
+
+movies_decade %&gt;%
+  ggplot(aes(
+    x = runtime_minutes,
+    y = average_rating,
+    color = year_bin
+  ))+
+  geom_smooth(size = 1,span = .5, alpha = .3)+
+  theme_bw()+
+  #facet_wrap(~year_bin, scales = &quot;free&quot;)+
+  labs(
+    x = &quot;runtime in minutes&quot;,
+    y = &quot;rating&quot;,
+    title = &quot;Average movie rating based on runtime&quot;,
+    subtitle = &quot;Facet by decade&quot;
+  )</code></pre>
+<p><img src="7-30-24_files/figure-html/visualization%204-1.png" width="1152" /></p>
+<pre class="r"><code>movies_decade %&gt;%
+  ggplot(aes(
+    x = runtime_minutes,
+    y = average_rating
+  ))+
+  geom_smooth(size = 1,span = .5)+
+  theme_bw()+
+  facet_wrap(~year_bin, scales = &quot;free&quot;)+
+  labs(
+    x = &quot;runtime in minutes&quot;,
+    y = &quot;rating&quot;,
+    title = &quot;Average movie rating based on runtime&quot;,
+    subtitle = &quot;Facet by decade&quot;
+  )</code></pre>
+<p><img src="7-30-24_files/figure-html/visualization%204-2.png" width="1152" /></p>
+<p>Based on using color to distinguish the different decades, it would
+look like all the decades have extremely similar ratings based on run
+time. If you facet by decade, it tells you a different story.</p>
+<p>There are lots of interesting things to extrapolate from the graph.
+Although the 1940s has an apparently steady rating over the decade, the
+shaded region suggests there is a wide amount of variation. We can also
+see some of the oddball dips and raises that are most likely due to the
+low amount of run times during that decade.</p>
+<pre class="r"><code>summer_movies %&gt;%
+  ggplot(aes(
+    x = num_votes,
+    y = average_rating
+  ))+
+  geom_line()+
+  labs(
+    x = &quot;Number of votes&quot;,
+    y = &quot;Average rating out of 10&quot;,
+    title = &quot;Average rating based on number of votes&quot;
+  )
+
+summer_movies %&gt;%
+  ggplot(aes(
+    x = num_votes,
+    y = average_rating
+  ))+
+  geom_smooth()+
+   labs(
+    x = &quot;Number of votes&quot;,
+    y = &quot;Average rating out of 10&quot;,
+    title = &quot;Average rating based on number of votes&quot;
+  )</code></pre>
+<p><img src="7-30-24_files/figure-html/visualziation%205-1.png" width="50%" /><img src="7-30-24_files/figure-html/visualziation%205-2.png" width="50%" /></p>
+<p>This plot was more for my amusement and to understand the difference
+between geom_line() and geom_smooth(). They provide you two different
+pictures of what is going on. Using geom_line(), you can tell there is
+lots of variation in the lower amount of votes, while the votes with an
+extreme amount of people show an above average rating.</p>
+<p>To better visualize this, I took the films with the ten hightest
+number of people voting and ten lowest number of people voting and
+compared them.</p>
+<pre class="r"><code>top_bottom_25 &lt;- summer_movies %&gt;%
+  filter(
+    title_type == &quot;movie&quot;
+  )
+
+top_bottom_25 &lt;- top_bottom_25 %&gt;%
+mutate(title_last = case_when(
+    primary_title == &quot;Indian Summer&quot; &amp; year == &quot;2013&quot; ~ &quot;Indian Summer (2013)&quot;,
+    primary_title == &quot;Summer of Soul (...Or, When the Revolution Could Not Be Televised)&quot; ~ &quot;Summer of Soul&quot;,
+    .default = as.character(primary_title)
+  ))
+
+top_25 &lt;- top_bottom_25 %&gt;%
+   arrange(desc(num_votes)) %&gt;%
+    slice(1:25) 
+
+top_25 %&gt;%
+  ggplot(aes(
+    x = fct_rev(title_last),
+    y = average_rating
+  ))+
+  geom_col(alpha = .5)+
+  theme_bw()+
+  geom_text(aes(x = title_last, 
+              y = average_rating, 
+              label = num_votes))+
+  coord_flip()+
+  labs(
+    x = &quot;Rating&quot;,
+    y = NULL,
+    title = &quot;Movie ratings with largest number of raters&quot;,
+  )
+
+
+
+
+
+bottom_25 &lt;- top_bottom_25 %&gt;%
+   arrange(num_votes) %&gt;%
+    slice(1:25) 
+
+bottom_25 %&gt;%
+  ggplot(aes(
+    x = fct_rev(title_last),
+    y = average_rating
+  ))+
+  geom_col(alpha = .5)+
+  theme_bw()+
+  geom_text(aes(x = title_last, 
+              y = average_rating, 
+              label = num_votes))+
+  coord_flip()+
+  labs(
+    x = &quot;Rating&quot;,
+    y = NULL,
+    title = &quot;Movie ratings with smallest number of raters&quot;,
+  )</code></pre>
+<p><img src="7-30-24_files/figure-html/visuliation%206-1.png" width="50%" /><img src="7-30-24_files/figure-html/visuliation%206-2.png" width="50%" /></p>
+<p>You can see in the side by side comparision that there is more
+variability and ratings are lower in the bottom 25 rating than in the
+top 25 ratings for movies.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
